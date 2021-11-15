@@ -9,7 +9,7 @@ import React from 'react'
 // import { useApollo } from '../lib/apolloClient'
 
 // scaffold-eth's INFURA_ID, SWAP IN YOURS FROM https://infura.io/dashboard/ethereum
-export const INFURA_ID = '7df83af29c4e45ffa25e3da6982e0ba2'
+export const INFURA_ID = ''
 
 const config: Config = {
   readOnlyUrls: {
