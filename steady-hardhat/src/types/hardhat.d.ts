@@ -13,77 +13,168 @@ import * as Contracts from ".";
 declare module "hardhat/types/runtime" {
   interface HardhatEthersHelpers extends HardhatEthersHelpersBase {
     getContractFactory(
-      name: "AggregatorV3Interface",
+      name: "AccessControlEnumerableUpgradeable",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.AggregatorV3Interface__factory>;
+    ): Promise<Contracts.AccessControlEnumerableUpgradeable__factory>;
     getContractFactory(
-      name: "Ownable",
+      name: "AccessControlUpgradeable",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Ownable__factory>;
+    ): Promise<Contracts.AccessControlUpgradeable__factory>;
     getContractFactory(
-      name: "Pausable",
+      name: "IAccessControlEnumerableUpgradeable",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Pausable__factory>;
+    ): Promise<Contracts.IAccessControlEnumerableUpgradeable__factory>;
     getContractFactory(
-      name: "ERC20",
+      name: "IAccessControlUpgradeable",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ERC20__factory>;
+    ): Promise<Contracts.IAccessControlUpgradeable__factory>;
     getContractFactory(
-      name: "ERC20Burnable",
+      name: "PausableUpgradeable",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ERC20Burnable__factory>;
+    ): Promise<Contracts.PausableUpgradeable__factory>;
     getContractFactory(
-      name: "IERC20Metadata",
+      name: "ERC20Upgradeable",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IERC20Metadata__factory>;
+    ): Promise<Contracts.ERC20Upgradeable__factory>;
     getContractFactory(
-      name: "IERC20",
+      name: "ERC20BurnableUpgradeable",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IERC20__factory>;
+    ): Promise<Contracts.ERC20BurnableUpgradeable__factory>;
     getContractFactory(
-      name: "CacheGold",
+      name: "ERC20PausableUpgradeable",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.CacheGold__factory>;
+    ): Promise<Contracts.ERC20PausableUpgradeable__factory>;
+    getContractFactory(
+      name: "IERC20MetadataUpgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC20MetadataUpgradeable__factory>;
+    getContractFactory(
+      name: "IERC20Upgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC20Upgradeable__factory>;
+    getContractFactory(
+      name: "ERC20PresetMinterPauserUpgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC20PresetMinterPauserUpgradeable__factory>;
+    getContractFactory(
+      name: "ERC165Upgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC165Upgradeable__factory>;
+    getContractFactory(
+      name: "IERC165Upgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC165Upgradeable__factory>;
+    getContractFactory(
+      name: "Alchemist",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Alchemist__factory>;
+    getContractFactory(
+      name: "FactoryProxy",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.FactoryProxy__factory>;
+    getContractFactory(
+      name: "ICHYME",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ICHYME__factory>;
+    getContractFactory(
+      name: "IERC20Burnable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC20Burnable__factory>;
     getContractFactory(
       name: "DummyPriceOracleForTesting",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.DummyPriceOracleForTesting__factory>;
-    getContractFactory(
-      name: "GoldGramConvertorPriceConsumer",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.GoldGramConvertorPriceConsumer__factory>;
-    getContractFactory(
-      name: "LockedGoldOracle",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.LockedGoldOracle__factory>;
-    getContractFactory(
-      name: "ICGT",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ICGT__factory>;
-    getContractFactory(
-      name: "RootAlchemist",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.RootAlchemist__factory>;
-    getContractFactory(
-      name: "Steady",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Steady__factory>;
-    getContractFactory(
-      name: "Unsteady",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Unsteady__factory>;
-    getContractFactory(
-      name: "Context",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Context__factory>;
-    getContractFactory(
-      name: "Ownable",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Ownable__factory>;
-    getContractFactory(
-      name: "IERC20",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IERC20__factory>;
+
+    getContractAt(
+      name: "AccessControlEnumerableUpgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.AccessControlEnumerableUpgradeable>;
+    getContractAt(
+      name: "AccessControlUpgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.AccessControlUpgradeable>;
+    getContractAt(
+      name: "IAccessControlEnumerableUpgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IAccessControlEnumerableUpgradeable>;
+    getContractAt(
+      name: "IAccessControlUpgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IAccessControlUpgradeable>;
+    getContractAt(
+      name: "PausableUpgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.PausableUpgradeable>;
+    getContractAt(
+      name: "ERC20Upgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC20Upgradeable>;
+    getContractAt(
+      name: "ERC20BurnableUpgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC20BurnableUpgradeable>;
+    getContractAt(
+      name: "ERC20PausableUpgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC20PausableUpgradeable>;
+    getContractAt(
+      name: "IERC20MetadataUpgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC20MetadataUpgradeable>;
+    getContractAt(
+      name: "IERC20Upgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC20Upgradeable>;
+    getContractAt(
+      name: "ERC20PresetMinterPauserUpgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC20PresetMinterPauserUpgradeable>;
+    getContractAt(
+      name: "ERC165Upgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC165Upgradeable>;
+    getContractAt(
+      name: "IERC165Upgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC165Upgradeable>;
+    getContractAt(
+      name: "Alchemist",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Alchemist>;
+    getContractAt(
+      name: "FactoryProxy",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.FactoryProxy>;
+    getContractAt(
+      name: "ICHYME",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ICHYME>;
+    getContractAt(
+      name: "IERC20Burnable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC20Burnable>;
+    getContractAt(
+      name: "DummyPriceOracleForTesting",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.DummyPriceOracleForTesting>;
 
     // default types
     getContractFactory(
@@ -95,5 +186,10 @@ declare module "hardhat/types/runtime" {
       bytecode: ethers.utils.BytesLike,
       signer?: ethers.Signer
     ): Promise<ethers.ContractFactory>;
+    getContractAt(
+      nameOrAbi: string | any[],
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<ethers.Contract>;
   }
 }
