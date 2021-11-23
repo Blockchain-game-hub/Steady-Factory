@@ -13,7 +13,7 @@ contract FetchMerkleForLatestEpoch is ChainlinkClient, Ownable {
     uint256 private fee;
 
     //this has to be later pushed into the MerkleDistributor.sol so needs to be an epoch -> hash mapping
-    bytes merkleHash;
+    bytes32 public merkleHash;
     /**
      * @dev set the initial oracle and job ID
      * @param _oracle This is the address of the oracle registered with chainlink
@@ -82,17 +82,16 @@ contract FetchMerkleForLatestEpoch is ChainlinkClient, Ownable {
      * @dev Kept pathOfValue as dynamic in case the path changes in future or we want to accomodate more in the same link
      * @param _pathOfValue This is the path of the value in the json object response in the url
      */ 
-    function requestedLockedData(string memory _pathOfValue) public returns (bytes32 requestId) 
+    function requestedLockedData(string memory _pathOfValue, uint _epochNumber) public returns (bytes32 requestId) 
     {
         require(bytes(_pathOfValue).length != 0, "Requested path is not valid");
         
         Chainlink.Request memory request = buildChainlinkRequest(jobId, address(this), this.fulfill.selector);
         
         // use 8 decimals for Cache Gold Token
-        request.add("get", "https://xyz/getEpochMerkle");
+        request.add("get", string(abi.encodePacked("https://xyz/merkleroot?epoch=",_epochNumber)));
         request.add("path", _pathOfValue);
-        int epoch = 10**8;
-        request.addInt("times", epoch);
+        
         // Sends the request
         requestId = sendChainlinkRequestTo(oracle, request, fee);
         return requestId;
@@ -103,7 +102,7 @@ contract FetchMerkleForLatestEpoch is ChainlinkClient, Ownable {
      * @param _requestId This is the request ID that was created in requestedLockedData
      * @param _merkleHash This is the hash of the requested root
      */ 
-    function fulfill(bytes32 _requestId, bytes memory _merkleHash) public recordChainlinkFulfillment(_requestId)
+    function fulfill(bytes32 _requestId, bytes32 _merkleHash) public recordChainlinkFulfillment(_requestId)
     {
         merkleHash = _merkleHash;
     }
