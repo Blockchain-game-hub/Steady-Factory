@@ -56,7 +56,6 @@ describe('Check the Alchemy', async () => {
     })
 
     beforeEach('deploy factory', async () => {
-        // factory = await loadFixture(fixture);
         const factoryProxy = await ethers.getContractFactory("FactoryProxy");
         factory = await factoryProxy.deploy() as FactoryProxy;
         factoryI = new ethers.Contract(factory.address, factoryAbi, wallet).connect(wallet);
