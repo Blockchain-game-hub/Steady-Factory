@@ -5,7 +5,9 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts-upgradeable/token/ERC20/presets/ERC20PresetMinterPauserUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/ClonesUpgradeable.sol";
+import "./interfaces/ICHYME.sol";
 import "./Alchemist.sol";
+import "hardhat/console.sol";
 
 contract FactoryProxy {
     address immutable elixirImplementation;
@@ -33,8 +35,9 @@ contract FactoryProxy {
         return steady;
     }
 
-    function alchemist(address _Chyme, address _priceOracle) external returns (address) {
-        string memory symbol  = ICHYME(_Chyme).symbol();
+    function alchemist(address _Chyme, address _priceOracle, string memory _symbol) external returns (address) {
+        // string memory symbol  = ICHYME(_Chyme).symbol();
+        string memory symbol  = _symbol;
         
         address _Steady = createSteady(string(abi.encodePacked(steady, symbol)), string(abi.encodePacked(steadySymbol, symbol)));
         address _Elixir = createElixir(string(abi.encodePacked(elixir, symbol)), string(abi.encodePacked(elixirSymbol, symbol)));

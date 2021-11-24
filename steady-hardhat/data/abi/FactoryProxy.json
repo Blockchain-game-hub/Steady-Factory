@@ -15,6 +15,11 @@
         "internalType": "address",
         "name": "_priceOracle",
         "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "_symbol",
+        "type": "string"
       }
     ],
     "name": "alchemist",

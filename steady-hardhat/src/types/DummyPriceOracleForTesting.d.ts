@@ -22,6 +22,8 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 interface DummyPriceOracleForTestingInterface extends ethers.utils.Interface {
   functions: {
     "getLatestPrice()": FunctionFragment;
+    "latestAnswer()": FunctionFragment;
+    "setLatestAnswer(int256)": FunctionFragment;
     "setLatestPrice(int256)": FunctionFragment;
   };
 
@@ -30,12 +32,28 @@ interface DummyPriceOracleForTestingInterface extends ethers.utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "latestAnswer",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setLatestAnswer",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "setLatestPrice",
     values: [BigNumberish]
   ): string;
 
   decodeFunctionResult(
     functionFragment: "getLatestPrice",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "latestAnswer",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setLatestAnswer",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -92,6 +110,13 @@ export class DummyPriceOracleForTesting extends BaseContract {
   functions: {
     getLatestPrice(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    latestAnswer(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    setLatestAnswer(
+      _latestAnswer: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     setLatestPrice(
       _price: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -100,6 +125,13 @@ export class DummyPriceOracleForTesting extends BaseContract {
 
   getLatestPrice(overrides?: CallOverrides): Promise<BigNumber>;
 
+  latestAnswer(overrides?: CallOverrides): Promise<BigNumber>;
+
+  setLatestAnswer(
+    _latestAnswer: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   setLatestPrice(
     _price: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -107,6 +139,13 @@ export class DummyPriceOracleForTesting extends BaseContract {
 
   callStatic: {
     getLatestPrice(overrides?: CallOverrides): Promise<BigNumber>;
+
+    latestAnswer(overrides?: CallOverrides): Promise<BigNumber>;
+
+    setLatestAnswer(
+      _latestAnswer: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     setLatestPrice(
       _price: BigNumberish,
@@ -119,6 +158,13 @@ export class DummyPriceOracleForTesting extends BaseContract {
   estimateGas: {
     getLatestPrice(overrides?: CallOverrides): Promise<BigNumber>;
 
+    latestAnswer(overrides?: CallOverrides): Promise<BigNumber>;
+
+    setLatestAnswer(
+      _latestAnswer: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     setLatestPrice(
       _price: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -127,6 +173,13 @@ export class DummyPriceOracleForTesting extends BaseContract {
 
   populateTransaction: {
     getLatestPrice(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    latestAnswer(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    setLatestAnswer(
+      _latestAnswer: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
 
     setLatestPrice(
       _price: BigNumberish,

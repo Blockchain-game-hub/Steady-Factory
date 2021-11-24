@@ -21,12 +21,12 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface FactoryProxyInterface extends ethers.utils.Interface {
   functions: {
-    "alchemist(address,address)": FunctionFragment;
+    "alchemist(address,address,string)": FunctionFragment;
   };
 
   encodeFunctionData(
     functionFragment: "alchemist",
-    values: [string, string]
+    values: [string, string, string]
   ): string;
 
   decodeFunctionResult(functionFragment: "alchemist", data: BytesLike): Result;
@@ -81,6 +81,7 @@ export class FactoryProxy extends BaseContract {
     alchemist(
       _Chyme: string,
       _priceOracle: string,
+      _symbol: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
@@ -88,6 +89,7 @@ export class FactoryProxy extends BaseContract {
   alchemist(
     _Chyme: string,
     _priceOracle: string,
+    _symbol: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -95,6 +97,7 @@ export class FactoryProxy extends BaseContract {
     alchemist(
       _Chyme: string,
       _priceOracle: string,
+      _symbol: string,
       overrides?: CallOverrides
     ): Promise<string>;
   };
@@ -105,6 +108,7 @@ export class FactoryProxy extends BaseContract {
     alchemist(
       _Chyme: string,
       _priceOracle: string,
+      _symbol: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
@@ -113,6 +117,7 @@ export class FactoryProxy extends BaseContract {
     alchemist(
       _Chyme: string,
       _priceOracle: string,
+      _symbol: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };
