@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "workspaces": ["steady-frontend", "steady-hardhat"],
+  "scripts": {    
+    "start": "yarn --cwd steady-frontend dev",    
+    "build": "yarn --cwd steady-frontend build"  
+ }
+}
