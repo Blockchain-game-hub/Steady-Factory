@@ -4,10 +4,10 @@ import { ethers, waffle, network } from "hardhat";
 // import { Signer } from "ethers";
 import { expect } from "chai";
 import { describe } from "mocha";
-import { Alchemist, FactoryProxy, DummyPriceOracleForTesting } from '../src/types/index';
-
+import { Alchemist, AlchemistAcademy, DummyPriceOracleForTesting } from '../src/types/index';
+import * as hre from "hardhat";
 // let mrAlchemist:Alchemist;
-let factory: FactoryProxy;
+let factory: AlchemistAcademy;
 let factoryI: Contract;
 let chymeI: Contract;
 let alch: Contract;
@@ -48,6 +48,14 @@ describe('Check the Alchemy', async () => {
     const createFixtureLoader = waffle.createFixtureLoader;
 
     before('create fixture loader', async () => {
+        await hre.network.provider.request({
+            method: "hardhat_impersonateAccount",
+            params: [chymeImpersonate],
+          });
+          await network.provider.send("hardhat_setBalance", [
+            chymeImpersonate,
+            "0xA688906BD8B00000",
+          ]);
         [wallet, Wallet2, Wallet3] = await (ethers as any).getSigners()
         chymeHolder = await (ethers as any).getSigner(chymeImpersonate);
         console.log("Wallet addresses - %s, %s, \n Chyme Address: %s", wallet.address, Wallet2.address, chymeHolder.address);
@@ -56,8 +64,8 @@ describe('Check the Alchemy', async () => {
     })
 
     beforeEach('deploy factory', async () => {
-        const factoryProxy = await ethers.getContractFactory("FactoryProxy");
-        factory = await factoryProxy.deploy() as FactoryProxy;
+        const factoryProxy = await ethers.getContractFactory("AlchemistAcademy");
+        factory = await factoryProxy.deploy() as AlchemistAcademy;
         factoryI = new ethers.Contract(factory.address, factoryAbi, wallet).connect(wallet);
 
         chymeI = new ethers.Contract(chymeAddress, chymeAbi, chymeHolder).connect(chymeHolder);
@@ -87,13 +95,14 @@ describe('Check the Alchemy', async () => {
 
             // alchI = new ethers.Contract(alchemistAddr, alchAbi, chymeHolder).connect(chymeHolder);
             
-            let tokenToSplit = await chymeI.balanceOf(wallet.address);
+            let tokenToSplit = await chymeI.balanceOf(chymeHolder.address);
 
-            console.log("chymeI balanceOf walletAddress: ", Number(tokenToSplit));
+            console.log("chymeI balanceOf chymeHolder: ", Number(tokenToSplit));
 
-            
+            await alchI.connect(chymeHolder).split(1000);
+            let tokenToSplitAfter = await chymeI.balanceOf(chymeHolder.address);
 
-            console.log(await alchI.connect(chymeHolder).split(1000));
+            console.log("chymeI balanceOf tokenToSplitAfter: ", Number(tokenToSplitAfter));
 
             // expect(await scgt.connect(Wallet3).balanceOf(Wallet3.address)).equals(432917350442);
             // let balanceOfNoFeesWallet3 = await unsteady.connect(Wallet3).balanceOfNoFees(Wallet3.address);

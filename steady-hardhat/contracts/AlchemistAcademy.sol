@@ -9,7 +9,7 @@ import "./interfaces/ICHYME.sol";
 import "./Alchemist.sol";
 import "hardhat/console.sol";
 
-contract FactoryProxy {
+contract AlchemistAcademy {
     address immutable elixirImplementation;
     address immutable steadyImplementation;
     address immutable alchemistImplementation;

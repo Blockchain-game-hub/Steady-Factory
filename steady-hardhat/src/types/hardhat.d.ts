@@ -113,9 +113,9 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Alchemist__factory>;
     getContractFactory(
-      name: "FactoryProxy",
+      name: "AlchemistAcademy",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.FactoryProxy__factory>;
+    ): Promise<Contracts.AlchemistAcademy__factory>;
     getContractFactory(
       name: "FetchMerkleForLatestEpoch",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -275,10 +275,10 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.Alchemist>;
     getContractAt(
-      name: "FactoryProxy",
+      name: "AlchemistAcademy",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.FactoryProxy>;
+    ): Promise<Contracts.AlchemistAcademy>;
     getContractAt(
       name: "FetchMerkleForLatestEpoch",
       address: string,
