@@ -22,14 +22,23 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 interface AlchemistAcademyInterface extends ethers.utils.Interface {
   functions: {
     "alchemist(address,address,string)": FunctionFragment;
+    "getLatestAlchemist()": FunctionFragment;
   };
 
   encodeFunctionData(
     functionFragment: "alchemist",
     values: [string, string, string]
   ): string;
+  encodeFunctionData(
+    functionFragment: "getLatestAlchemist",
+    values?: undefined
+  ): string;
 
   decodeFunctionResult(functionFragment: "alchemist", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getLatestAlchemist",
+    data: BytesLike
+  ): Result;
 
   events: {};
 }
@@ -84,6 +93,8 @@ export class AlchemistAcademy extends BaseContract {
       _symbol: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    getLatestAlchemist(overrides?: CallOverrides): Promise<[string]>;
   };
 
   alchemist(
@@ -93,6 +104,8 @@ export class AlchemistAcademy extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  getLatestAlchemist(overrides?: CallOverrides): Promise<string>;
+
   callStatic: {
     alchemist(
       _Chyme: string,
@@ -100,6 +113,8 @@ export class AlchemistAcademy extends BaseContract {
       _symbol: string,
       overrides?: CallOverrides
     ): Promise<string>;
+
+    getLatestAlchemist(overrides?: CallOverrides): Promise<string>;
   };
 
   filters: {};
@@ -111,6 +126,8 @@ export class AlchemistAcademy extends BaseContract {
       _symbol: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    getLatestAlchemist(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -119,6 +136,10 @@ export class AlchemistAcademy extends BaseContract {
       _priceOracle: string,
       _symbol: string,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    getLatestAlchemist(
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };
 }

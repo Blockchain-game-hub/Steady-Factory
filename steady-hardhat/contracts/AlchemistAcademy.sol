@@ -18,6 +18,8 @@ contract AlchemistAcademy {
     string steadySymbol = "S"; 
     string elixirSymbol = "E"; 
 
+    address alchemistDeployedAddress;
+    
     constructor() {
         elixirImplementation = address(new ERC20PresetMinterPauserUpgradeable());
         steadyImplementation = address(new ERC20PresetMinterPauserUpgradeable());
@@ -48,6 +50,13 @@ contract AlchemistAcademy {
            _Steady,
            _Elixir,
            _priceOracle);
+ 
+        console.log("This is the actual alchemist address %s", alchemistDeployed);
+        alchemistDeployedAddress = alchemistDeployed;
         return alchemistDeployed;
+    }
+
+    function getLatestAlchemist() external view returns(address){
+        return alchemistDeployedAddress;
     }
 }

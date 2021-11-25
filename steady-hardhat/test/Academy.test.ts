@@ -4,7 +4,7 @@ import { ethers, waffle, network } from "hardhat";
 // import { Signer } from "ethers";
 import { expect } from "chai";
 import { describe } from "mocha";
-import { Alchemist, AlchemistAcademy, DummyPriceOracleForTesting } from '../src/types/index';
+import { Alchemist, AlchemistAcademy, DummyPriceOracleForTesting, ICHYME } from '../src/types/index';
 import * as hre from "hardhat";
 // let mrAlchemist:Alchemist;
 let factory: AlchemistAcademy;
@@ -29,7 +29,8 @@ const factoryAbi = [
 
 const chymeAbi = [
     "function balanceOf(address owner) public view returns (uint256)",
-    "function getSteady() public view returns (address)"
+    "function getSteady() public view returns (address)",
+    "function approve(address spender,uint256 addedValue) returns (bool)"
 ]
 
 const alchAbi = [
@@ -66,20 +67,22 @@ describe('Check the Alchemy', async () => {
     beforeEach('deploy factory', async () => {
         const factoryProxy = await ethers.getContractFactory("AlchemistAcademy");
         factory = await factoryProxy.deploy() as AlchemistAcademy;
-        factoryI = new ethers.Contract(factory.address, factoryAbi, wallet).connect(wallet);
+        // const chymeFactory = await ethers.getContractFactory("ICHYME");
+        
+        // factoryI = new ethers.Contract(factory.address, factoryAbi, wallet).connect(wallet);
 
-        chymeI = new ethers.Contract(chymeAddress, chymeAbi, chymeHolder).connect(chymeHolder);
-
+        // chymeI = new ethers.Contract(chymeAddress, chymeAbi, chymeHolder).connect(chymeHolder);
+        chymeI = await ethers.getContractAt(chymeAbi, chymeAddress) as ICHYME;
         const _dummyPriceOracleForTesting = await ethers.getContractFactory("DummyPriceOracleForTesting");
         dummyPriceOracleForTesting = await _dummyPriceOracleForTesting.deploy() as DummyPriceOracleForTesting;
 
-        await dummyPriceOracleForTesting.setLatestPrice(5778003570);
+        await dummyPriceOracleForTesting.setLatestAnswer(5778003570);
     })
 
 
     describe('Setting up Alchemist Factory', async () => {
         it('setup factory', async () => {
-            let alchemistAddr = await factoryI.connect(chymeHolder).alchemist(chymeAddress, oracleAddress, chymeSymbol);
+            let alchemistAddr = await factory.connect(chymeHolder).alchemist(chymeAddress, dummyPriceOracleForTesting.address, chymeSymbol);
             // console.log(Number(await chymeI.balanceOf(chymeHolder.address)));
             console.log('Alchemist address: ', alchemistAddr);
         });
@@ -89,20 +92,21 @@ describe('Check the Alchemy', async () => {
         it('can split TokenX belonging to it', async () => {
             let alchemistGetContract = await ethers.getContractFactory("Alchemist");
             
-            let alchemistAddr = await factoryI.connect(chymeHolder).alchemist(chymeAddress, oracleAddress, chymeSymbol);
-
-            let alchI = await alchemistGetContract.attach(alchemistAddr) as Alchemist;
-
-            // alchI = new ethers.Contract(alchemistAddr, alchAbi, chymeHolder).connect(chymeHolder);
+            await factory.connect(chymeHolder).alchemist(chymeAddress, dummyPriceOracleForTesting.address, chymeSymbol);
+            let alchemistAddr =  await factory.getLatestAlchemist();
             
+            let alchI = await alchemistGetContract.attach(alchemistAddr) as Alchemist;
+            console.log("The alchemist address from the test is  - ", alchemistAddr);
+              
+
             let tokenToSplit = await chymeI.balanceOf(chymeHolder.address);
 
             console.log("chymeI balanceOf chymeHolder: ", Number(tokenToSplit));
-
+            await chymeI.connect(chymeHolder).approve(alchI.address, 100000) 
             await alchI.connect(chymeHolder).split(1000);
-            let tokenToSplitAfter = await chymeI.balanceOf(chymeHolder.address);
+            // let tokenToSplitAfter = await chymeI.balanceOf(chymeHolder.address);
 
-            console.log("chymeI balanceOf tokenToSplitAfter: ", Number(tokenToSplitAfter));
+            // console.log("chymeI balanceOf tokenToSplitAfter: ", Number(tokenToSplitAfter));
 
             // expect(await scgt.connect(Wallet3).balanceOf(Wallet3.address)).equals(432917350442);
             // let balanceOfNoFeesWallet3 = await unsteady.connect(Wallet3).balanceOfNoFees(Wallet3.address);
