@@ -21,10 +21,15 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface AlchemistAcademyInterface extends ethers.utils.Interface {
   functions: {
+    "MINTER_ROLE()": FunctionFragment;
     "alchemist(address,address,string)": FunctionFragment;
     "getLatestAlchemist()": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "MINTER_ROLE",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "alchemist",
     values: [string, string, string]
@@ -34,6 +39,10 @@ interface AlchemistAcademyInterface extends ethers.utils.Interface {
     values?: undefined
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "MINTER_ROLE",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "alchemist", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getLatestAlchemist",
@@ -87,6 +96,8 @@ export class AlchemistAcademy extends BaseContract {
   interface: AlchemistAcademyInterface;
 
   functions: {
+    MINTER_ROLE(overrides?: CallOverrides): Promise<[string]>;
+
     alchemist(
       _Chyme: string,
       _priceOracle: string,
@@ -96,6 +107,8 @@ export class AlchemistAcademy extends BaseContract {
 
     getLatestAlchemist(overrides?: CallOverrides): Promise<[string]>;
   };
+
+  MINTER_ROLE(overrides?: CallOverrides): Promise<string>;
 
   alchemist(
     _Chyme: string,
@@ -107,6 +120,8 @@ export class AlchemistAcademy extends BaseContract {
   getLatestAlchemist(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
+    MINTER_ROLE(overrides?: CallOverrides): Promise<string>;
+
     alchemist(
       _Chyme: string,
       _priceOracle: string,
@@ -120,6 +135,8 @@ export class AlchemistAcademy extends BaseContract {
   filters: {};
 
   estimateGas: {
+    MINTER_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
+
     alchemist(
       _Chyme: string,
       _priceOracle: string,
@@ -131,6 +148,8 @@ export class AlchemistAcademy extends BaseContract {
   };
 
   populateTransaction: {
+    MINTER_ROLE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     alchemist(
       _Chyme: string,
       _priceOracle: string,

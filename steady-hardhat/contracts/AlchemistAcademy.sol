@@ -16,7 +16,8 @@ contract AlchemistAcademy {
     string steady = "Steady "; 
     string elixir = "Elixir "; 
     string steadySymbol = "S"; 
-    string elixirSymbol = "E"; 
+    string elixirSymbol = "E";
+    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
     address alchemistDeployedAddress;
     
@@ -50,8 +51,10 @@ contract AlchemistAcademy {
            _Steady,
            _Elixir,
            _priceOracle);
- 
-        console.log("This is the actual alchemist address %s", alchemistDeployed);
+        
+        IAccessControlEnumerableUpgradeable(_Elixir).grantRole(MINTER_ROLE, alchemistDeployed);
+        IAccessControlEnumerableUpgradeable(_Steady).grantRole(MINTER_ROLE, alchemistDeployed);
+
         alchemistDeployedAddress = alchemistDeployed;
         return alchemistDeployed;
     }
