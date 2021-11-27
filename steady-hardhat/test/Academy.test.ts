@@ -92,7 +92,7 @@ describe('Check the Alchemy', async () => {
     });
 
     describe('Ideal alchemy cases for Alchemist', () => {
-        it('can split TokenX belonging to it', async () => {
+        xit('can split TokenX belonging to it', async () => {
             let alchemistGetContract = await ethers.getContractFactory("Alchemist");
             
             await factory.connect(chymeHolder).alchemist(chymeAddress, dummyPriceOracleForTesting.address, chymeSymbol);
@@ -149,11 +149,16 @@ describe('Check the Alchemy', async () => {
 
             // ------ Try to merge back the splitAmt ------
             // approves the merge amt
-            await Steady.connect(chymeHolder).approve(alchI.address, BigNumber.from(splitAmt.toString()));
-            await Elixir.connect(chymeHolder).approve(alchI.address, BigNumber.from(splitAmt.toString()));
-            await alchI.connect(chymeHolder).merge(BigNumber.from(splitAmt.toString()));
-            await chymeI.connect(chymeHolder).transferFrom(alchI.address, chymeI.address, 100);
 
+            let steadyAmt = "43335026775000000000".toString();
+            let elixirAmt = "250000000000000000".toString();
+            
+            await Steady.connect(chymeHolder).approve(alchI.address, BigNumber.from(steadyAmt));
+            await Elixir.connect(chymeHolder).approve(alchI.address, BigNumber.from(elixirAmt));
+            console.log("Steady alchI(%s) Allowance: %s", alchI.address, await Steady.allowance(chymeHolder.address, alchI.address));
+            console.log("Elixir alchI(%s) Allowance: %s", alchI.address, await Elixir.allowance(chymeHolder.address, alchI.address));
+            await alchI.connect(chymeHolder).merge(BigNumber.from(splitAmt.toString()));
+            await chymeI.connect(chymeHolder).transferFrom(alchI.address, chymeI.address, BigNumber.from(splitAmt.toString()));
         });
     });
 });

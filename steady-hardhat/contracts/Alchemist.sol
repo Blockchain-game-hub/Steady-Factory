@@ -112,7 +112,9 @@ contract Alchemist is ReentrancyGuard, Initializable {
         require(__steady.amount <= __steady.balance, "Need more Steady");
         //approve Chyme from this address to the msg.sender
         Chyme.approve(msg.sender, ChymeAmountToMerge);
-        console.log("Burn Elixir: %s\nBurn Steady: %s", __elixir.amount, __steady.amount);
+        // console.log("Burn Elixir: %s\nBurn Steady: %s", __elixir.amount, __steady.amount);
+        console.log("alchI addr: %s", address(this));
+        console.log("Tring to merge Steady: %s, ||  Elixir: %s", __steady.amount, __elixir.amount);
         elixir.burnFrom(msg.sender, __elixir.amount);
         steady.burnFrom(msg.sender, __steady.amount);
 
