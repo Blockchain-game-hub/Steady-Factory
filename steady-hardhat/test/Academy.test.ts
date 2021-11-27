@@ -83,7 +83,7 @@ describe('Check the Alchemy', async () => {
     })
 
 
-    describe.skip('Setting up Alchemist Factory', async () => {
+    describe('Setting up Alchemist Factory', async () => {
         it('setup factory', async () => {
             let alchemistAddr = await factory.connect(chymeHolder).alchemist(chymeAddress, dummyPriceOracleForTesting.address, chymeSymbol);
             // console.log(Number(await chymeI.balanceOf(chymeHolder.address)));
@@ -92,7 +92,7 @@ describe('Check the Alchemy', async () => {
     });
 
     describe('Ideal alchemy cases for Alchemist', () => {
-        xit('can split TokenX belonging to it', async () => {
+        it('can split TokenX belonging to it', async () => {
             let alchemistGetContract = await ethers.getContractFactory("Alchemist");
             
             await factory.connect(chymeHolder).alchemist(chymeAddress, dummyPriceOracleForTesting.address, chymeSymbol);

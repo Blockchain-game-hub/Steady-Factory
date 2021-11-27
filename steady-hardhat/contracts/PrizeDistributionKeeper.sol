@@ -3,6 +3,10 @@
 pragma solidity ^0.8.0;
 
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "./FetchMerkleForLatestEpoch.sol";
+import "./MerkleDistributor.sol";
 
 interface KeeperCompatibleInterface {
     function checkUpkeep(bytes calldata checkData) external returns (bool upkeepNeeded, bytes memory performData);
@@ -10,18 +14,39 @@ interface KeeperCompatibleInterface {
 }
 
 
-contract PrizeDistributionContract is KeeperCompatibleInterface {
-    constructor(address _merkleDistributor) {
-      //here set the merkle distributor address
+contract PrizeDistributionContract is KeeperCompatibleInterface, ChainlinkClient, Ownable {
+    using Chainlink for Chainlink.Request;
+
+    uint private creationBlock = block.number;
+    address private merkleDistributor;
+    address private fetchMerkle;
+    bytes32 private jobId;
+
+    constructor(address _merkleDistributor, address _fetchMerkle) {
+      merkleDistributor = _merkleDistributor;
+      fetchMerkle = _fetchMerkle;
+    }
+
+    function setJobId(bytes32 _jobId) external onlyOwner {
+        jobId = _jobId;
     }
 
     /**
      *  @notice Check Upkeep called by keepers to check if upkeep is required
      */ 
+     
     function checkUpkeep(bytes calldata checkData) external view override returns  (bool upkeepNeeded, bytes memory performData)   {
-        //here check whether an epoch is finished and  if anyone played? This can be done via an API call
+      //here check whether an epoch is finished and  if anyone played? This can be done via an API call
       address wallet = abi.decode(checkData, (address));
       return (wallet.balance < 1 ether, bytes(""));
+      if((block.number - creationBlock)% 10 == 0)
+      {
+        uint epochNumber = (block.number - creationBlock)/10;
+        return (true, abi.encode(epochNumber));
+      }
+      else{
+        return (false, checkData);
+      }
     }
 
     /**
@@ -29,9 +54,15 @@ contract PrizeDistributionContract is KeeperCompatibleInterface {
      */ 
     function performUpkeep(bytes calldata performData) external override {
       //Here what we want to do is if the check upkeep returned true, set the merkleroothash for that epoch
-      address[] memory wallets = abi.decode(performData, (address[]));
-      for (uint256 i = 0; i < wallets.length; i++) {
-        payable(wallets[i]).transfer(1 ether);
-      }
+      (uint256 epochNumber) = abi.decode(performData, (uint256));
+
+      //Triggering api contracts request method
+      FetchMerkleForLatestEpoch(fetchMerkle).requestedLockedData("_pathOfValue",epochNumber);
+
+      (bool success, bytes memory callData) = address(fetchMerkle).staticcall(abi.encodeWithSignature("merkleHash()"));
+      require(success, "Unable to fetch merkle hash");
+      (bytes32 merkleRoot) = abi.decode(callData, (bytes32));
+      
+      MerkleDistributor(merkleDistributor).setMerkleRootPerEpoch(merkleRoot, epochNumber-1);
     }
 }
