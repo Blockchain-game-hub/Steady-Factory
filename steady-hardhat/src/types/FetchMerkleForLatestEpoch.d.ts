@@ -29,6 +29,7 @@ interface FetchMerkleForLatestEpochInterface extends ethers.utils.Interface {
     "owner()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "requestedLockedData(string,uint256)": FunctionFragment;
+    "setAPIEndpoint(string)": FunctionFragment;
     "setFees(uint256)": FunctionFragment;
     "setJobId(bytes32)": FunctionFragment;
     "setOracle(address)": FunctionFragment;
@@ -57,6 +58,10 @@ interface FetchMerkleForLatestEpochInterface extends ethers.utils.Interface {
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "setAPIEndpoint",
+    values: [string]
+  ): string;
+  encodeFunctionData(
     functionFragment: "setFees",
     values: [BigNumberish]
   ): string;
@@ -83,6 +88,10 @@ interface FetchMerkleForLatestEpochInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "requestedLockedData",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setAPIEndpoint",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "setFees", data: BytesLike): Result;
@@ -196,6 +205,11 @@ export class FetchMerkleForLatestEpoch extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    setAPIEndpoint(
+      _api_endpoint: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     setFees(
       _fee: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -247,6 +261,11 @@ export class FetchMerkleForLatestEpoch extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  setAPIEndpoint(
+    _api_endpoint: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   setFees(
     _fee: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -295,6 +314,11 @@ export class FetchMerkleForLatestEpoch extends BaseContract {
       _epochNumber: BigNumberish,
       overrides?: CallOverrides
     ): Promise<string>;
+
+    setAPIEndpoint(
+      _api_endpoint: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     setFees(_fee: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
@@ -379,6 +403,11 @@ export class FetchMerkleForLatestEpoch extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    setAPIEndpoint(
+      _api_endpoint: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     setFees(
       _fee: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -428,6 +457,11 @@ export class FetchMerkleForLatestEpoch extends BaseContract {
     requestedLockedData(
       _pathOfValue: string,
       _epochNumber: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setAPIEndpoint(
+      _api_endpoint: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
