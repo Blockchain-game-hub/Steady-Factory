@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 {
   "private": true,
   "workspaces": ["steady-frontend", "steady-hardhat", "steady-game"],
@@ -6,13 +5,4 @@
     "start": "yarn --cwd steady-frontend dev",    
     "build": "yarn --cwd steady-frontend build"  
  }
-=======
-{
-  "private": true,
-  "workspaces": ["steady-frontend", "steady-hardhat", "steady-game"],
-  "scripts": {    
-    "start": "yarn --cwd steady-frontend dev",    
-    "build": "yarn --cwd steady-frontend build"  
- }
->>>>>>> main
 }

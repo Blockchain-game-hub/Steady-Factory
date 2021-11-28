@@ -1,34 +1,63 @@
-import { ethers } from "ethers";
+import { ethers } from "hardhat";
+import * as hre from "hardhat";
 
-let provider = ethers.getDefaultProvider("mumbai");
-let privateKey = "5eeb541643d1a8b040b8934ddd2482815bee040a710b4ddc4bc3738447fafff4";
-let wallet = new ethers.Wallet(privateKey, provider);
-const tokenAddr = "0x0936597380adb89dE3a9cA8aF322e042cbd1193B";
-const chymeAddress = '0x3845badAde8e6dFF049820680d1F14bD3903a5d0';
-const oracleAddress = '0xCF4Be57aA078Dc7568C631BE7A73adc1cdA992F8';
-const chymeSymbol = "SAND";
+const tokenAddr = "0x4bae94FC93deE9712d94451FC434421F883a3300";
+const chymeAddress = '0x326c977e6efc84e512bb9c30f76e30c160ed06fb';
+const oracleAddress = '0x12162c3E810393dEC01362aBf156D7ecf6159528';
+const chymeSymbol = "LINK";
 
 // The ERC-20 Contract ABI, which is a common contract interface
 // for tokens (this is the Human-Readable ABI format)
 const daiAbi = [
   // Some details about the token
-  "function alchemist(address _Chyme, address _priceOracle, string memory _symbol) external returns (address)"
+  "function alchemist(address _Chyme, address _priceOracle, string memory _symbol) external returns (address)",
+  "function getLatestAlchemist() external view returns (address)"
 ];
 
 // The Contract object
-let tokenContract = new ethers.Contract(tokenAddr, daiAbi, wallet).connect(wallet);
+
 
 async function main() {
-  let overrides = {
-    value: ethers.utils.parseEther("0.1")
-  };
-  // let uri = await tokenContract.setStorageFeePaidPeriod(1651911566, 8);
-  // let uri = await tokenContract.forceTransferToCache(8, {gasLimit:550000});
-  let uri = await tokenContract.alchemist(chymeAddress, oracleAddress, chymeSymbol, {gasLimit: 11250000});
-  console.log(uri);
+
+  // const accounts = await ethers.getSigners()
+  // let tokenContract = new ethers.Contract(tokenAddr, daiAbi, accounts[0]).connect(accounts[0]);
+  // let overrides = {
+  //   value: ethers.utils.parseEther("0.1")
+  // };
+
+  // // let uri = await tokenContract.alchemist(chymeAddress, oracleAddress, chymeSymbol, { gasLimit: 11250000 });
+  // let uri = await tokenContract.getLatestAlchemist();
+  // console.log(uri);
+  // // return tokenContract.address;
+  return "0x5EB1303916F2a56455f563B5a5b3Fa33b3Ed498E";
 }
 
+async function verify(contractAddress:string, ...args:Array<any>) {
+  console.log("verifying", contractAddress, ...args);
+  await hre.run("verify:verify", {
+    address: contractAddress,
+    constructorArguments: [
+      ...args
+    ],
+  });
+}
+
+function delay(ms: number) {
+  return new Promise( resolve => setTimeout(resolve, ms) );
+}
+
+
+// We recommend this pattern to be able to use async/await everywhere
+// and properly handle errors.
 main()
-  .catch((err) => {
-    console.error(err);
+  .then( async (deployedData) => {
+    const accounts = await ethers.getSigners()
+    // await delay(50000);
+    await verify(deployedData);
+
+    process.exit(0)
+  })
+  .catch(error => {
+    console.error(error);
+    process.exit(1);
   });
