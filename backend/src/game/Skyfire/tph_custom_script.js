@@ -1,5 +1,47 @@
 // See if Metamask is installed in the browser
 web3 = "";
+/* Moralis init code */
+
+
+async function moralisLogOut() {
+  await Moralis.User.logOut();
+  console.log("logged out");
+}
+let subscription;
+async function moralisLogin() {
+	const serverUrl = "https://ecwergzc0upy.usemoralis.com:2053/server";
+const appId = "aSQqwVAKRqeHqz3FVcMwLCuPjL2avMKX4DFnj2vD";
+Moralis.start({ serverUrl, appId });
+  let user = Moralis.User.current();
+	var map = {};
+	map["id"] = "moralisLogin";
+	map["user"] = "0";
+  if (!user) {
+    user = await Moralis.authenticate({ signingMessage: "Log in using Moralis" })
+      .then(function (user) {
+        console.log("logged in user:", user);
+        console.log(user.get("ethAddress"));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+		map["user"] = user;
+		}
+		let query = new Moralis.Query('Storage');
+    subscription = await query.subscribe();
+		subscription.on('create', (object) => {
+		 	moralisSetStorage(object);
+		});
+		GMS_API.send_async_event_social(map);
+	}
+
+	
+async function moralisSetStorage(object) {
+	console.log('object created', object);
+	var map = {};
+	map["id"] = "moralisSetStorage";
+	GMS_API.send_async_event_social(map);
+}
 
 function checkMetaConnection() {
 	if (typeof window.ethereum !== 'undefined') {
