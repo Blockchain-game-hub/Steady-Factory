@@ -31,16 +31,16 @@ Moralis.start({ serverUrl, appId });
 		let query = new Moralis.Query('Split');
     subscription = await query.subscribe();
 		subscription.on('create', (object) => {
-		 	moralisSetStorage(object);
+			moralisSetSplit(object);
 		});
 		GMS_API.send_async_event_social(map);
 	}
 
 	
-async function moralisSetStorage(object) {
+async function moralisSetSplit(object) {
 	console.log('object created', object);
 	var map = {};
-	map["id"] = "moralisSetStorage";
+	map["id"] = "moralisSetSplit";
 	GMS_API.send_async_event_social(map);
 }
 
@@ -175,8 +175,8 @@ async function splitChyme(wallet_address) {
 	// Hardcoded for now
 	let minABI = [ { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "source", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "mergedAmount", "type": "uint256" }, { "indexed": false, "internalType": "int256", "name": "price", "type": "int256" } ], "name": "Merge", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "source", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "splitAmount", "type": "uint256" }, { "indexed": false, "internalType": "int256", "name": "price", "type": "int256" } ], "name": "Split", "type": "event" }, { "inputs": [], "name": "Chyme", "outputs": [ { "internalType": "contract ICHYME", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "elixir", "outputs": [ { "internalType": "contract IERC20Burnable", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "_Chyme", "type": "address" }, { "internalType": "address", "name": "_Steady", "type": "address" }, { "internalType": "address", "name": "_Elixir", "type": "address" }, { "internalType": "address", "name": "_priceOracle", "type": "address" } ], "name": "initialize", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "ChymeAmountToMerge", "type": "uint256" } ], "name": "merge", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "priceFromOracle", "outputs": [ { "internalType": "int256", "name": "price", "type": "int256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "priceOracle", "outputs": [ { "internalType": "address", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "amount", "type": "uint256" } ], "name": "split", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "steady", "outputs": [ { "internalType": "contract IERC20Burnable", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" } ];
 
-	// let amount = 1000000000000000000;
-	let amount = 10;
+	let amount = 1000000000000000000;
+	// let amount = 10;
 
 	let contract = new web3.eth.Contract(minABI, "0x5eb1303916f2a56455f563b5a5b3fa33b3ed498e");
 	console.log(contract);
