@@ -22,29 +22,73 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 interface PrizeDistributionContractInterface extends ethers.utils.Interface {
   functions: {
     "checkUpkeep(bytes)": FunctionFragment;
+    "owner()": FunctionFragment;
     "performUpkeep(bytes)": FunctionFragment;
+    "renounceOwnership()": FunctionFragment;
+    "setJobId(bytes32)": FunctionFragment;
+    "transferOwnership(address)": FunctionFragment;
   };
 
   encodeFunctionData(
     functionFragment: "checkUpkeep",
     values: [BytesLike]
   ): string;
+  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "performUpkeep",
     values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "renounceOwnership",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "setJobId", values: [BytesLike]): string;
+  encodeFunctionData(
+    functionFragment: "transferOwnership",
+    values: [string]
   ): string;
 
   decodeFunctionResult(
     functionFragment: "checkUpkeep",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "performUpkeep",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "renounceOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "setJobId", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "transferOwnership",
+    data: BytesLike
+  ): Result;
 
-  events: {};
+  events: {
+    "ChainlinkCancelled(bytes32)": EventFragment;
+    "ChainlinkFulfilled(bytes32)": EventFragment;
+    "ChainlinkRequested(bytes32)": EventFragment;
+    "OwnershipTransferred(address,address)": EventFragment;
+  };
+
+  getEvent(nameOrSignatureOrTopic: "ChainlinkCancelled"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ChainlinkFulfilled"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ChainlinkRequested"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
 }
+
+export type ChainlinkCancelledEvent = TypedEvent<[string] & { id: string }>;
+
+export type ChainlinkFulfilledEvent = TypedEvent<[string] & { id: string }>;
+
+export type ChainlinkRequestedEvent = TypedEvent<[string] & { id: string }>;
+
+export type OwnershipTransferredEvent = TypedEvent<
+  [string, string] & { previousOwner: string; newOwner: string }
+>;
 
 export class PrizeDistributionContract extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -97,8 +141,24 @@ export class PrizeDistributionContract extends BaseContract {
       [boolean, string] & { upkeepNeeded: boolean; performData: string }
     >;
 
+    owner(overrides?: CallOverrides): Promise<[string]>;
+
     performUpkeep(
       performData: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    renounceOwnership(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    setJobId(
+      _jobId: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    transferOwnership(
+      newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
@@ -110,8 +170,24 @@ export class PrizeDistributionContract extends BaseContract {
     [boolean, string] & { upkeepNeeded: boolean; performData: string }
   >;
 
+  owner(overrides?: CallOverrides): Promise<string>;
+
   performUpkeep(
     performData: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  renounceOwnership(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  setJobId(
+    _jobId: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  transferOwnership(
+    newOwner: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -123,13 +199,64 @@ export class PrizeDistributionContract extends BaseContract {
       [boolean, string] & { upkeepNeeded: boolean; performData: string }
     >;
 
+    owner(overrides?: CallOverrides): Promise<string>;
+
     performUpkeep(
       performData: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    renounceOwnership(overrides?: CallOverrides): Promise<void>;
+
+    setJobId(_jobId: BytesLike, overrides?: CallOverrides): Promise<void>;
+
+    transferOwnership(
+      newOwner: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
-  filters: {};
+  filters: {
+    "ChainlinkCancelled(bytes32)"(
+      id?: BytesLike | null
+    ): TypedEventFilter<[string], { id: string }>;
+
+    ChainlinkCancelled(
+      id?: BytesLike | null
+    ): TypedEventFilter<[string], { id: string }>;
+
+    "ChainlinkFulfilled(bytes32)"(
+      id?: BytesLike | null
+    ): TypedEventFilter<[string], { id: string }>;
+
+    ChainlinkFulfilled(
+      id?: BytesLike | null
+    ): TypedEventFilter<[string], { id: string }>;
+
+    "ChainlinkRequested(bytes32)"(
+      id?: BytesLike | null
+    ): TypedEventFilter<[string], { id: string }>;
+
+    ChainlinkRequested(
+      id?: BytesLike | null
+    ): TypedEventFilter<[string], { id: string }>;
+
+    "OwnershipTransferred(address,address)"(
+      previousOwner?: string | null,
+      newOwner?: string | null
+    ): TypedEventFilter<
+      [string, string],
+      { previousOwner: string; newOwner: string }
+    >;
+
+    OwnershipTransferred(
+      previousOwner?: string | null,
+      newOwner?: string | null
+    ): TypedEventFilter<
+      [string, string],
+      { previousOwner: string; newOwner: string }
+    >;
+  };
 
   estimateGas: {
     checkUpkeep(
@@ -137,8 +264,24 @@ export class PrizeDistributionContract extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    owner(overrides?: CallOverrides): Promise<BigNumber>;
+
     performUpkeep(
       performData: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    renounceOwnership(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    setJobId(
+      _jobId: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    transferOwnership(
+      newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
@@ -149,8 +292,24 @@ export class PrizeDistributionContract extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     performUpkeep(
       performData: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    renounceOwnership(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setJobId(
+      _jobId: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    transferOwnership(
+      newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };

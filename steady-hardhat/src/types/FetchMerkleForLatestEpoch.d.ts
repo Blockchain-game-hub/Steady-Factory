@@ -21,13 +21,14 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface FetchMerkleForLatestEpochInterface extends ethers.utils.Interface {
   functions: {
-    "fulfill(bytes32,bytes)": FunctionFragment;
+    "fulfill(bytes32,bytes32)": FunctionFragment;
     "getFees()": FunctionFragment;
     "getJobId()": FunctionFragment;
     "getOracle()": FunctionFragment;
+    "merkleHash()": FunctionFragment;
     "owner()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
-    "requestedLockedData(string)": FunctionFragment;
+    "requestedLockedData(string,uint256)": FunctionFragment;
     "setFees(uint256)": FunctionFragment;
     "setJobId(bytes32)": FunctionFragment;
     "setOracle(address)": FunctionFragment;
@@ -42,6 +43,10 @@ interface FetchMerkleForLatestEpochInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "getFees", values?: undefined): string;
   encodeFunctionData(functionFragment: "getJobId", values?: undefined): string;
   encodeFunctionData(functionFragment: "getOracle", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "merkleHash",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
@@ -49,7 +54,7 @@ interface FetchMerkleForLatestEpochInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "requestedLockedData",
-    values: [string]
+    values: [string, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "setFees",
@@ -70,6 +75,7 @@ interface FetchMerkleForLatestEpochInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "getFees", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getJobId", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getOracle", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "merkleHash", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
@@ -176,6 +182,8 @@ export class FetchMerkleForLatestEpoch extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string] & { oracleAddress: string }>;
 
+    merkleHash(overrides?: CallOverrides): Promise<[string]>;
+
     owner(overrides?: CallOverrides): Promise<[string]>;
 
     renounceOwnership(
@@ -184,6 +192,7 @@ export class FetchMerkleForLatestEpoch extends BaseContract {
 
     requestedLockedData(
       _pathOfValue: string,
+      _epochNumber: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -224,6 +233,8 @@ export class FetchMerkleForLatestEpoch extends BaseContract {
 
   getOracle(overrides?: CallOverrides): Promise<string>;
 
+  merkleHash(overrides?: CallOverrides): Promise<string>;
+
   owner(overrides?: CallOverrides): Promise<string>;
 
   renounceOwnership(
@@ -232,6 +243,7 @@ export class FetchMerkleForLatestEpoch extends BaseContract {
 
   requestedLockedData(
     _pathOfValue: string,
+    _epochNumber: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -272,12 +284,15 @@ export class FetchMerkleForLatestEpoch extends BaseContract {
 
     getOracle(overrides?: CallOverrides): Promise<string>;
 
+    merkleHash(overrides?: CallOverrides): Promise<string>;
+
     owner(overrides?: CallOverrides): Promise<string>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
 
     requestedLockedData(
       _pathOfValue: string,
+      _epochNumber: BigNumberish,
       overrides?: CallOverrides
     ): Promise<string>;
 
@@ -350,6 +365,8 @@ export class FetchMerkleForLatestEpoch extends BaseContract {
 
     getOracle(overrides?: CallOverrides): Promise<BigNumber>;
 
+    merkleHash(overrides?: CallOverrides): Promise<BigNumber>;
+
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
     renounceOwnership(
@@ -358,6 +375,7 @@ export class FetchMerkleForLatestEpoch extends BaseContract {
 
     requestedLockedData(
       _pathOfValue: string,
+      _epochNumber: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -399,6 +417,8 @@ export class FetchMerkleForLatestEpoch extends BaseContract {
 
     getOracle(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    merkleHash(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     renounceOwnership(
@@ -407,6 +427,7 @@ export class FetchMerkleForLatestEpoch extends BaseContract {
 
     requestedLockedData(
       _pathOfValue: string,
+      _epochNumber: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

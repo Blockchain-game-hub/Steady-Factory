@@ -81,9 +81,9 @@
         "type": "bytes32"
       },
       {
-        "internalType": "bytes",
+        "internalType": "bytes32",
         "name": "_merkleHash",
-        "type": "bytes"
+        "type": "bytes32"
       }
     ],
     "name": "fulfill",
@@ -132,6 +132,19 @@
   },
   {
     "inputs": [],
+    "name": "merkleHash",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "owner",
     "outputs": [
       {
@@ -156,6 +169,11 @@
         "internalType": "string",
         "name": "_pathOfValue",
         "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_epochNumber",
+        "type": "uint256"
       }
     ],
     "name": "requestedLockedData",
