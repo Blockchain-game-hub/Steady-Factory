@@ -5,17 +5,22 @@
         "internalType": "address",
         "name": "_merkleDistributor",
         "type": "address"
+<<<<<<< HEAD
+=======
       },
       {
         "internalType": "address",
         "name": "_fetchMerkle",
         "type": "address"
+>>>>>>> main
       }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
   {
+<<<<<<< HEAD
+=======
     "anonymous": false,
     "inputs": [
       {
@@ -74,6 +79,7 @@
     "type": "event"
   },
   {
+>>>>>>> main
     "inputs": [
       {
         "internalType": "bytes",
@@ -98,6 +104,8 @@
     "type": "function"
   },
   {
+<<<<<<< HEAD
+=======
     "inputs": [],
     "name": "owner",
     "outputs": [
@@ -111,6 +119,7 @@
     "type": "function"
   },
   {
+>>>>>>> main
     "inputs": [
       {
         "internalType": "bytes",
@@ -122,6 +131,8 @@
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
+<<<<<<< HEAD
+=======
   },
   {
     "inputs": [],
@@ -155,5 +166,6 @@
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
+>>>>>>> main
   }
 ]

@@ -81,9 +81,15 @@
         "type": "bytes32"
       },
       {
+<<<<<<< HEAD
+        "internalType": "bytes",
+        "name": "_merkleHash",
+        "type": "bytes"
+=======
         "internalType": "bytes32",
         "name": "_merkleHash",
         "type": "bytes32"
+>>>>>>> main
       }
     ],
     "name": "fulfill",
@@ -132,6 +138,8 @@
   },
   {
     "inputs": [],
+<<<<<<< HEAD
+=======
     "name": "merkleHash",
     "outputs": [
       {
@@ -145,6 +153,7 @@
   },
   {
     "inputs": [],
+>>>>>>> main
     "name": "owner",
     "outputs": [
       {
@@ -169,11 +178,14 @@
         "internalType": "string",
         "name": "_pathOfValue",
         "type": "string"
+<<<<<<< HEAD
+=======
       },
       {
         "internalType": "uint256",
         "name": "_epochNumber",
         "type": "uint256"
+>>>>>>> main
       }
     ],
     "name": "requestedLockedData",
@@ -190,6 +202,8 @@
   {
     "inputs": [
       {
+<<<<<<< HEAD
+=======
         "internalType": "string",
         "name": "_api_endpoint",
         "type": "string"
@@ -203,6 +217,7 @@
   {
     "inputs": [
       {
+>>>>>>> main
         "internalType": "uint256",
         "name": "_fee",
         "type": "uint256"

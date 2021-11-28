@@ -55,6 +55,7 @@ contract Alchemist is ReentrancyGuard, Initializable {
         nonReentrant() 
         returns (bool) 
     {
+        console.log("balance in contract:");
         require(amount >= 10); //minimum amount that can be split is 10 units or 0.0000001 Grams
         uint256 balanceOfSender = Chyme.balanceOf(msg.sender);
         require(amount <= balanceOfSender, "You do not have enough Chyme");
@@ -104,7 +105,8 @@ contract Alchemist is ReentrancyGuard, Initializable {
 
     /// @dev Oracle price for Chyme utilizing chainlink
     function priceFromOracle() public view returns (int256 price) {
-        bytes memory payload = abi.encodeWithSignature("getLatestPrice()");
+        // bytes memory payload = abi.encodeWithSignature("getLatestPrice()");
+        bytes memory payload = abi.encodeWithSignature("latestAnswer()");
         (, bytes memory returnData) = address(priceOracle).staticcall(payload);
         (price) = abi.decode(returnData, (int256));
         //minimumn price of 0.00000001 and max price of 1 Trillion

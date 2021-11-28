@@ -50,6 +50,12 @@ task("accounts", "Prints the list of accounts", async (args, { ethers }) => {
         notice no mnemonic here? it will just use account 0 of the hardhat node to deploy
         (you can put in a mnemonic here to set the deployer locally)
       */
+        forking: {
+          enabled: true,
+          url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`,
+          blockNumber: 13670552,
+        },
+        accounts
     },
     hardhat: {
       // Seems to be a bug with this, even when false it complains about being unauthenticated.
@@ -57,7 +63,7 @@ task("accounts", "Prints the list of accounts", async (args, { ethers }) => {
       forking: {
         enabled: true,
         url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`,
-        blockNumber: 12906266,
+        blockNumber: 13670552,
       },
       accounts
     },
