@@ -28,7 +28,7 @@ const web3 = new Web3(new Web3.providers.HttpProvider(process.env.RINKEBY_RPC ||
 dotenv.config();
 
 const app = express();
-const PORT = 8888;
+const PORT = 80;
 // app.use(helmet());
 app.use(express.json());
 
