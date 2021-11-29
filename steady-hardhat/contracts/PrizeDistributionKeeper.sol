@@ -36,12 +36,9 @@ contract PrizeDistributionKeeper is KeeperCompatibleInterface, ChainlinkClient, 
      */ 
      
     function checkUpkeep(bytes calldata checkData) external view override returns  (bool upkeepNeeded, bytes memory performData)   {
-      //here check whether an epoch is finished and  if anyone played? This can be done via an API call
-      address wallet = abi.decode(checkData, (address));
-      return (wallet.balance < 1 ether, bytes(""));
-      if((block.number - creationBlock)% 10 == 0)
+      if((block.number - creationBlock) % 100 == 0)
       {
-        uint epochNumber = (block.number - creationBlock)/10;
+        uint epochNumber = (block.number - creationBlock)/100;
         return (true, abi.encode(epochNumber));
       }
       else{
