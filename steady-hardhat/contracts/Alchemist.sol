@@ -19,6 +19,8 @@ contract Alchemist is ReentrancyGuard, Initializable {
     address public steadyAddr;
     address public elixirAddr;
     address public priceOracle;
+    address immutable public sdtAddress = 0x738C763dC38751Fc870a1B24ab23a7A36591005C;
+
 
     event Split(address indexed source, uint256 splitAmount, int256 price);
     event Merge(address indexed source, uint256 mergedAmount, int256 price);
@@ -80,6 +82,9 @@ contract Alchemist is ReentrancyGuard, Initializable {
         Chyme.transferFrom(msg.sender, address(this), amount);
         steady.mint(msg.sender, sChymeamt);
         elixir.mint(msg.sender, (amount * 25 ) / 100 / 10 * 10);
+
+        //reward splitter with SDT
+        // ICHYME(sdtAddress).approve(msg.sender, 10);
 
         // Remove this
         console.log("STEADY ANSWER:: %s", sChymeamt);

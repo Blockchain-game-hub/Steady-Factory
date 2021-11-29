@@ -30,6 +30,7 @@ interface AlchemistInterface extends ethers.utils.Interface {
     "merge(uint256)": FunctionFragment;
     "priceFromOracle()": FunctionFragment;
     "priceOracle()": FunctionFragment;
+    "sdtAddress()": FunctionFragment;
     "split(uint256)": FunctionFragment;
     "steady()": FunctionFragment;
     "steadyAddr()": FunctionFragment;
@@ -62,6 +63,10 @@ interface AlchemistInterface extends ethers.utils.Interface {
     functionFragment: "priceOracle",
     values?: undefined
   ): string;
+  encodeFunctionData(
+    functionFragment: "sdtAddress",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "split", values: [BigNumberish]): string;
   encodeFunctionData(functionFragment: "steady", values?: undefined): string;
   encodeFunctionData(
@@ -90,6 +95,7 @@ interface AlchemistInterface extends ethers.utils.Interface {
     functionFragment: "priceOracle",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "sdtAddress", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "split", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "steady", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "steadyAddr", data: BytesLike): Result;
@@ -192,6 +198,8 @@ export class Alchemist extends BaseContract {
 
     priceOracle(overrides?: CallOverrides): Promise<[string]>;
 
+    sdtAddress(overrides?: CallOverrides): Promise<[string]>;
+
     split(
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -229,6 +237,8 @@ export class Alchemist extends BaseContract {
 
   priceOracle(overrides?: CallOverrides): Promise<string>;
 
+  sdtAddress(overrides?: CallOverrides): Promise<string>;
+
   split(
     amount: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -265,6 +275,8 @@ export class Alchemist extends BaseContract {
     priceFromOracle(overrides?: CallOverrides): Promise<BigNumber>;
 
     priceOracle(overrides?: CallOverrides): Promise<string>;
+
+    sdtAddress(overrides?: CallOverrides): Promise<string>;
 
     split(amount: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
 
@@ -339,6 +351,8 @@ export class Alchemist extends BaseContract {
 
     priceOracle(overrides?: CallOverrides): Promise<BigNumber>;
 
+    sdtAddress(overrides?: CallOverrides): Promise<BigNumber>;
+
     split(
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -376,6 +390,8 @@ export class Alchemist extends BaseContract {
     priceFromOracle(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     priceOracle(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    sdtAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     split(
       amount: BigNumberish,

@@ -24,6 +24,8 @@ export type { ERC20PresetMinterPauserUpgradeable } from "./ERC20PresetMinterPaus
 export type { ERC165Upgradeable } from "./ERC165Upgradeable";
 export type { IERC165Upgradeable } from "./IERC165Upgradeable";
 export type { Ownable } from "./Ownable";
+export type { ERC20 } from "./ERC20";
+export type { IERC20Metadata } from "./IERC20Metadata";
 export type { IERC20 } from "./IERC20";
 export type { Alchemist } from "./Alchemist";
 export type { AlchemistAcademy } from "./AlchemistAcademy";
@@ -34,6 +36,7 @@ export type { IMerkleDistributor } from "./IMerkleDistributor";
 export type { MerkleDistributor } from "./MerkleDistributor";
 export type { KeeperCompatibleInterface } from "./KeeperCompatibleInterface";
 export type { PrizeDistributionContract } from "./PrizeDistributionContract";
+export type { SteadyDaoToken } from "./SteadyDaoToken";
 export type { DummyPriceOracleForTesting } from "./DummyPriceOracleForTesting";
 
 export { ChainlinkClient__factory } from "./factories/ChainlinkClient__factory";
@@ -59,6 +62,8 @@ export { ERC20PresetMinterPauserUpgradeable__factory } from "./factories/ERC20Pr
 export { ERC165Upgradeable__factory } from "./factories/ERC165Upgradeable__factory";
 export { IERC165Upgradeable__factory } from "./factories/IERC165Upgradeable__factory";
 export { Ownable__factory } from "./factories/Ownable__factory";
+export { ERC20__factory } from "./factories/ERC20__factory";
+export { IERC20Metadata__factory } from "./factories/IERC20Metadata__factory";
 export { IERC20__factory } from "./factories/IERC20__factory";
 export { Alchemist__factory } from "./factories/Alchemist__factory";
 export { AlchemistAcademy__factory } from "./factories/AlchemistAcademy__factory";
@@ -69,4 +74,5 @@ export { IMerkleDistributor__factory } from "./factories/IMerkleDistributor__fac
 export { MerkleDistributor__factory } from "./factories/MerkleDistributor__factory";
 export { KeeperCompatibleInterface__factory } from "./factories/KeeperCompatibleInterface__factory";
 export { PrizeDistributionContract__factory } from "./factories/PrizeDistributionContract__factory";
+export { SteadyDaoToken__factory } from "./factories/SteadyDaoToken__factory";
 export { DummyPriceOracleForTesting__factory } from "./factories/DummyPriceOracleForTesting__factory";
