@@ -16,7 +16,6 @@ const daiAbi = [
 
 // The Contract object
 
-
 async function main() {
   const Alchemist = await ethers.getContractFactory("Alchemist");
   const alchemist = await Alchemist.deploy(
