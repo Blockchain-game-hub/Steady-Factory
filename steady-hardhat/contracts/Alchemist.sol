@@ -16,6 +16,8 @@ contract Alchemist is ReentrancyGuard, Initializable {
     ICHYME public Chyme;
     IERC20Burnable public steady;
     IERC20Burnable public elixir;
+    address public steadyAddr;
+    address public elixirAddr;
     address public priceOracle;
 
     event Split(address indexed source, uint256 splitAmount, int256 price);
@@ -45,7 +47,17 @@ contract Alchemist is ReentrancyGuard, Initializable {
         Chyme = ICHYME(_Chyme);
         steady = IERC20Burnable(_Steady);
         elixir = IERC20Burnable(_Elixir);
+        steadyAddr = _Steady;
+        elixirAddr = _Elixir;
         priceOracle = _priceOracle; // 0x34BCe86EEf8516282FEE6B5FD19824163C2B5914;
+    }
+
+    function getSteadyAddr() public view returns(address) {
+        return steadyAddr;
+    }
+
+    function getElixirAddr() public view returns(address) {
+        return elixirAddr;
     }
 
     /// @dev This splits an amount of Chyme into two parts one is Steady tokens which is the 3/4 the token in dollar value
@@ -69,6 +81,10 @@ contract Alchemist is ReentrancyGuard, Initializable {
         steady.mint(msg.sender, sChymeamt);
         elixir.mint(msg.sender, (amount * 25 ) / 100 / 10 * 10);
 
+        // Remove this
+        console.log("STEADY ANSWER:: %s", sChymeamt);
+        console.log("EXLIXIR ANSWER:: %s", (amount * 25 ) / 100 / 10 * 10);
+        //
         emit Split(msg.sender, amount, price);
         return true;
     }
@@ -96,6 +112,9 @@ contract Alchemist is ReentrancyGuard, Initializable {
         require(__steady.amount <= __steady.balance, "Need more Steady");
         //approve Chyme from this address to the msg.sender
         Chyme.approve(msg.sender, ChymeAmountToMerge);
+        // console.log("Burn Elixir: %s\nBurn Steady: %s", __elixir.amount, __steady.amount);
+        console.log("alchI addr: %s", address(this));
+        console.log("Tring to merge Steady: %s, ||  Elixir: %s", __steady.amount, __elixir.amount);
         elixir.burnFrom(msg.sender, __elixir.amount);
         steady.burnFrom(msg.sender, __steady.amount);
 

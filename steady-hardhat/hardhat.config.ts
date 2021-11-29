@@ -16,6 +16,9 @@ const accounts = {
     "test test test test test test test test test test test test",
 };
 
+
+const MUMBAI_PRIVATE_KEY = "5eeb541643d1a8b040b8934ddd2482815bee040a710b4ddc4bc3738447fafff4";
+
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
 task("accounts", "Prints the list of accounts", async (args, { ethers }) => {
@@ -32,11 +35,11 @@ task("accounts", "Prints the list of accounts", async (args, { ethers }) => {
  const config: HardhatUserConfig =  {
   defaultNetwork: "hardhat",
   solidity: {compilers: [
+    // {
+    //   version: "0.5.16",
+    // },
     {
-      version: "0.5.16",
-    },
-    {
-      version: "0.8.6",
+      version: "0.8.0",
       settings: {},
     },
   ]},
@@ -96,6 +99,11 @@ task("accounts", "Prints the list of accounts", async (args, { ethers }) => {
       url: 'https://rpc-mainnet.maticvigil.com/',
       gasPrice: 1000000000,
       accounts,
+    },
+    mumbai: {
+      url: `https://polygon-mumbai.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
+      gasPrice: 1000000000,
+      accounts: [`${MUMBAI_PRIVATE_KEY}`],
     },
   },
   preprocess: {

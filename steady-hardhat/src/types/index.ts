@@ -26,7 +26,7 @@ export type { IERC165Upgradeable } from "./IERC165Upgradeable";
 export type { Ownable } from "./Ownable";
 export type { IERC20 } from "./IERC20";
 export type { Alchemist } from "./Alchemist";
-export type { FactoryProxy } from "./FactoryProxy";
+export type { AlchemistAcademy } from "./AlchemistAcademy";
 export type { FetchMerkleForLatestEpoch } from "./FetchMerkleForLatestEpoch";
 export type { ICHYME } from "./ICHYME";
 export type { IERC20Burnable } from "./IERC20Burnable";
@@ -61,7 +61,7 @@ export { IERC165Upgradeable__factory } from "./factories/IERC165Upgradeable__fac
 export { Ownable__factory } from "./factories/Ownable__factory";
 export { IERC20__factory } from "./factories/IERC20__factory";
 export { Alchemist__factory } from "./factories/Alchemist__factory";
-export { FactoryProxy__factory } from "./factories/FactoryProxy__factory";
+export { AlchemistAcademy__factory } from "./factories/AlchemistAcademy__factory";
 export { FetchMerkleForLatestEpoch__factory } from "./factories/FetchMerkleForLatestEpoch__factory";
 export { ICHYME__factory } from "./factories/ICHYME__factory";
 export { IERC20Burnable__factory } from "./factories/IERC20Burnable__factory";

@@ -2,9 +2,10 @@ import { Wallet } from 'ethers'
 import { Contract } from "@ethersproject/contracts";
 import { ethers, waffle, network } from "hardhat";
 // import { Signer } from "ethers";
+import { BigNumber } from '@ethersproject/bignumber';
 import { expect } from "chai";
 import { describe } from "mocha";
-import { Alchemist, AlchemistAcademy, DummyPriceOracleForTesting, ICHYME } from '../src/types/index';
+import { Alchemist, AlchemistAcademy, DummyPriceOracleForTesting, ICHYME, ERC20PresetMinterPauserUpgradeable } from '../src/types/index';
 import * as hre from "hardhat";
 // let mrAlchemist:Alchemist;
 let factory: AlchemistAcademy;
@@ -17,6 +18,7 @@ const testAddresses = ['0xb4E459c2d7C9C4A13C4870ED35653d71536F5a4B', '0xE61A1736
 const feeAddress = '0x3E924146306957bD453502e33B9a7B6AbA6e4D3a';
 
 // SAND token and Oracle
+// Tests are based on Block: 13670552
 const chymeAddress = '0x3845badAde8e6dFF049820680d1F14bD3903a5d0';
 const oracleAddress = '0xCF4Be57aA078Dc7568C631BE7A73adc1cdA992F8';
 const chymeSymbol = "SAND";
@@ -30,7 +32,8 @@ const factoryAbi = [
 const chymeAbi = [
     "function balanceOf(address owner) public view returns (uint256)",
     "function getSteady() public view returns (address)",
-    "function approve(address spender,uint256 addedValue) returns (bool)"
+    "function approve(address spender,uint256 addedValue) returns (bool)",
+    "function transferFrom(address from,address to,uint256 value) external returns (bool)"
 ]
 
 const alchAbi = [
@@ -99,20 +102,63 @@ describe('Check the Alchemy', async () => {
             console.log("The alchemist address from the test is  - ", alchemistAddr);
               
 
-            let tokenToSplit = await chymeI.balanceOf(chymeHolder.address);
+            let chymeHolderBal = await chymeI.balanceOf(chymeHolder.address);
+            let splitAmt = 1e18;
 
-            console.log("chymeI balanceOf chymeHolder: ", Number(tokenToSplit));
-            await chymeI.connect(chymeHolder).approve(alchI.address, 100000) 
-            await alchI.connect(chymeHolder).split(1000);
-            // let tokenToSplitAfter = await chymeI.balanceOf(chymeHolder.address);
+            console.log("chymeI balanceOf chymeHolder: ", chymeHolderBal.toString());
+            await chymeI.connect(chymeHolder).approve(alchI.address, BigNumber.from(splitAmt.toString()));
+            await alchI.connect(chymeHolder).split(BigNumber.from(splitAmt.toString()));
 
-            // console.log("chymeI balanceOf tokenToSplitAfter: ", Number(tokenToSplitAfter));
+            let tokenToSplitAfter = await chymeI.balanceOf(chymeHolder.address);
+            console.log("chymeI balanceOf tokenToSplitAfter: ", tokenToSplitAfter.toString());
 
-            // expect(await scgt.connect(Wallet3).balanceOf(Wallet3.address)).equals(432917350442);
-            // let balanceOfNoFeesWallet3 = await unsteady.connect(Wallet3).balanceOfNoFees(Wallet3.address);
-            // let calcBalance = (tokenToSplit.toNumber()  * (1/4))
-            // .toString().slice(0, -4).padEnd(10, '0');
-            // expect(balanceOfNoFeesWallet3.toNumber().toString()).equals(calcBalance);
+            expect(tokenToSplitAfter.toString()).to.be.equal(
+                (BigNumber.from(chymeHolderBal.toString()).sub(
+                BigNumber.from(splitAmt.toString()))).toString()
+                );
+
+            let ERCFactory = await ethers.getContractFactory("ERC20PresetMinterPauserUpgradeable");
+            let stdAddr = await alchI.getSteadyAddr();
+            let elxAddr = await alchI.getElixirAddr();
+            let Steady = await ERCFactory.attach(stdAddr) as ERC20PresetMinterPauserUpgradeable;
+            let Elixir = await ERCFactory.attach(elxAddr) as ERC20PresetMinterPauserUpgradeable;
+
+            // console.log("LATEST UPDATE:::::::: %s", await Steady.balanceOf(chymeHolder.address));
+            expect(await Steady.balanceOf(chymeHolder.address)).equals(BigNumber.from("43335026775000000000"));
+            expect(await Elixir.balanceOf(chymeHolder.address)).equals(BigNumber.from("250000000000000000"));
+        });
+
+        it('can merge TokenX belonging to it', async () => {
+            await factory.connect(chymeHolder).alchemist(chymeAddress, dummyPriceOracleForTesting.address, chymeSymbol);
+            
+            let alchemistGetContract = await ethers.getContractFactory("Alchemist");
+            let alchemistAddr =  await factory.getLatestAlchemist();      
+            let alchI = await alchemistGetContract.attach(alchemistAddr) as Alchemist;              
+
+            let chymeHolderBal = await chymeI.balanceOf(chymeHolder.address);
+            let splitAmt = 1e18;
+
+            await chymeI.connect(chymeHolder).approve(alchI.address, BigNumber.from(splitAmt.toString()));
+            await alchI.connect(chymeHolder).split(BigNumber.from(splitAmt.toString()));
+
+            let ERCFactory = await ethers.getContractFactory("ERC20PresetMinterPauserUpgradeable");
+            let stdAddr = await alchI.getSteadyAddr();
+            let elxAddr = await alchI.getElixirAddr();
+            let Steady = await ERCFactory.attach(stdAddr) as ERC20PresetMinterPauserUpgradeable;
+            let Elixir = await ERCFactory.attach(elxAddr) as ERC20PresetMinterPauserUpgradeable;
+
+            // ------ Try to merge back the splitAmt ------
+            // approves the merge amt
+
+            let steadyAmt = "43335026775000000000".toString();
+            let elixirAmt = "250000000000000000".toString();
+            
+            await Steady.connect(chymeHolder).approve(alchI.address, BigNumber.from(steadyAmt));
+            await Elixir.connect(chymeHolder).approve(alchI.address, BigNumber.from(elixirAmt));
+            console.log("Steady alchI(%s) Allowance: %s", alchI.address, await Steady.allowance(chymeHolder.address, alchI.address));
+            console.log("Elixir alchI(%s) Allowance: %s", alchI.address, await Elixir.allowance(chymeHolder.address, alchI.address));
+            await alchI.connect(chymeHolder).merge(BigNumber.from(splitAmt.toString()));
+            await chymeI.connect(chymeHolder).transferFrom(alchI.address, chymeI.address, BigNumber.from(splitAmt.toString()));
         });
     });
 });

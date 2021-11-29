@@ -1,6 +1,11 @@
 {
   "name": "steady-hardhat",
   "version": "1.0.0",
+  "scripts": {
+    "deploym": "npx hardhat run scripts/deploy.ts --network mumbai",
+    "custom": "npx hardhat run scripts/custom.ts --network mumbai",
+    "deployMaster": "npx hardhat run scripts/deployMaster.ts --network mumbai"
+  },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@nomiclabs/hardhat-etherscan": "^2.1.3",

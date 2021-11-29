@@ -23,16 +23,32 @@ interface AlchemistInterface extends ethers.utils.Interface {
   functions: {
     "Chyme()": FunctionFragment;
     "elixir()": FunctionFragment;
+    "elixirAddr()": FunctionFragment;
+    "getElixirAddr()": FunctionFragment;
+    "getSteadyAddr()": FunctionFragment;
     "initialize(address,address,address,address)": FunctionFragment;
     "merge(uint256)": FunctionFragment;
     "priceFromOracle()": FunctionFragment;
     "priceOracle()": FunctionFragment;
     "split(uint256)": FunctionFragment;
     "steady()": FunctionFragment;
+    "steadyAddr()": FunctionFragment;
   };
 
   encodeFunctionData(functionFragment: "Chyme", values?: undefined): string;
   encodeFunctionData(functionFragment: "elixir", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "elixirAddr",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getElixirAddr",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getSteadyAddr",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "initialize",
     values: [string, string, string, string]
@@ -48,9 +64,22 @@ interface AlchemistInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "split", values: [BigNumberish]): string;
   encodeFunctionData(functionFragment: "steady", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "steadyAddr",
+    values?: undefined
+  ): string;
 
   decodeFunctionResult(functionFragment: "Chyme", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "elixir", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "elixirAddr", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getElixirAddr",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getSteadyAddr",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "merge", data: BytesLike): Result;
   decodeFunctionResult(
@@ -63,6 +92,7 @@ interface AlchemistInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "split", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "steady", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "steadyAddr", data: BytesLike): Result;
 
   events: {
     "Merge(address,uint256,int256)": EventFragment;
@@ -137,6 +167,12 @@ export class Alchemist extends BaseContract {
 
     elixir(overrides?: CallOverrides): Promise<[string]>;
 
+    elixirAddr(overrides?: CallOverrides): Promise<[string]>;
+
+    getElixirAddr(overrides?: CallOverrides): Promise<[string]>;
+
+    getSteadyAddr(overrides?: CallOverrides): Promise<[string]>;
+
     initialize(
       _Chyme: string,
       _Steady: string,
@@ -162,11 +198,19 @@ export class Alchemist extends BaseContract {
     ): Promise<ContractTransaction>;
 
     steady(overrides?: CallOverrides): Promise<[string]>;
+
+    steadyAddr(overrides?: CallOverrides): Promise<[string]>;
   };
 
   Chyme(overrides?: CallOverrides): Promise<string>;
 
   elixir(overrides?: CallOverrides): Promise<string>;
+
+  elixirAddr(overrides?: CallOverrides): Promise<string>;
+
+  getElixirAddr(overrides?: CallOverrides): Promise<string>;
+
+  getSteadyAddr(overrides?: CallOverrides): Promise<string>;
 
   initialize(
     _Chyme: string,
@@ -192,10 +236,18 @@ export class Alchemist extends BaseContract {
 
   steady(overrides?: CallOverrides): Promise<string>;
 
+  steadyAddr(overrides?: CallOverrides): Promise<string>;
+
   callStatic: {
     Chyme(overrides?: CallOverrides): Promise<string>;
 
     elixir(overrides?: CallOverrides): Promise<string>;
+
+    elixirAddr(overrides?: CallOverrides): Promise<string>;
+
+    getElixirAddr(overrides?: CallOverrides): Promise<string>;
+
+    getSteadyAddr(overrides?: CallOverrides): Promise<string>;
 
     initialize(
       _Chyme: string,
@@ -217,6 +269,8 @@ export class Alchemist extends BaseContract {
     split(amount: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
 
     steady(overrides?: CallOverrides): Promise<string>;
+
+    steadyAddr(overrides?: CallOverrides): Promise<string>;
   };
 
   filters: {
@@ -262,6 +316,12 @@ export class Alchemist extends BaseContract {
 
     elixir(overrides?: CallOverrides): Promise<BigNumber>;
 
+    elixirAddr(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getElixirAddr(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getSteadyAddr(overrides?: CallOverrides): Promise<BigNumber>;
+
     initialize(
       _Chyme: string,
       _Steady: string,
@@ -285,12 +345,20 @@ export class Alchemist extends BaseContract {
     ): Promise<BigNumber>;
 
     steady(overrides?: CallOverrides): Promise<BigNumber>;
+
+    steadyAddr(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
     Chyme(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     elixir(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    elixirAddr(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getElixirAddr(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getSteadyAddr(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     initialize(
       _Chyme: string,
@@ -315,5 +383,7 @@ export class Alchemist extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     steady(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    steadyAddr(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }
