@@ -54,7 +54,8 @@ contract MerkleDistributor is IMerkleDistributor, Ownable {
         emit Claimed(_epoch, index, account, amount);
     }
 
-    function setMerkleRootPerEpoch(bytes32 _merkleRoot, uint256 _epoch) external onlyOwner() {
+    ///dev add modifier to check that it is only Prize Distribution Contract
+    function setMerkleRootPerEpoch(bytes32 _merkleRoot, uint256 _epoch) external {
         merkleRootInEpoch[_epoch] = _merkleRoot;
     }
 }

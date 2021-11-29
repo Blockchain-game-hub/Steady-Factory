@@ -10,7 +10,7 @@ import fs from 'fs';
 import { PrizeDistributionContract , MerkleDistributor} from '../src/types/index';
 import * as hre from "hardhat";
 
-const UFO_TOKEN_ADDRESS = "0x249e38ea4102d0cf8264d3701f1a0e39c4f2dc3b";
+const STEADY_DAO_TOKEN_ADDRESS = "0x738C763dC38751Fc870a1B24ab23a7A36591005C";
 
 let  nonDeployer: Wallet, deployer : Wallet;
 
@@ -20,14 +20,10 @@ let  nonDeployer: Wallet, deployer : Wallet;
 async function main() {
   const accounts = await (ethers as any).getSigners()
   deployer = accounts[0];
-  // fs.unlinkSync(`${config.paths.artifacts}/contracts/contractAddress.ts`);
-  // const tokenFactory = await ethers.getContractFactory("SteadyDAOToken");
-  // const token = await tokenFactory.deploy();
-  // console.log("Deploying prizeDist contract...", prizeDist.address);
   
   const merkleDistFactory = await ethers.getContractFactory("MerkleDistributor");
-  const merkleDist = await merkleDistFactory.deploy(UFO_TOKEN_ADDRESS);
-  console.log("Deploying prizeDist contract...", merkleDist.address);
+  const merkleDist = await merkleDistFactory.deploy(STEADY_DAO_TOKEN_ADDRESS);
+  console.log("Deploying merkleDistFactory contract...", merkleDist.address);
 
   const prizeDistFactory = await ethers.getContractFactory("PrizeDistributionContract");
   const prizeDist = await prizeDistFactory.deploy(merkleDist.address, merkleDist.address);//we put dummy for the api
@@ -57,7 +53,7 @@ function delay(ms: number) {
 // and properly handle errors.
 main()
   .then( async (deployedData) => {
-    await delay(50000);
+    await delay(10000);
     await verify(deployedData.prizeDist, deployedData.merkleDist, deployedData.merkleDist);
     // await verify(deployedData._oracleAddress)
 

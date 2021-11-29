@@ -54,15 +54,19 @@ contract PrizeDistributionContract is KeeperCompatibleInterface, ChainlinkClient
      */ 
     function performUpkeep(bytes calldata performData) external override {
       //Here what we want to do is if the check upkeep returned true, set the merkleroothash for that epoch
-      (uint256 epochNumber) = abi.decode(performData, (uint256));
+      uint256 epochNumber;
+      for(uint i=0;i<performData.length;i++){
+            epochNumber = epochNumber + uint8(performData[i]);
+      }
 
-      //Triggering api contracts request method
-      FetchMerkleForLatestEpoch(fetchMerkle).requestedLockedData("_pathOfValue",epochNumber);
+      //Triggering api contracts request method //commenting out for now coz no API in polygon mumbai
+      // FetchMerkleForLatestEpoch(fetchMerkle).requestedLockedData("_pathOfValue",epochNumber);
 
-      (bool success, bytes memory callData) = address(fetchMerkle).staticcall(abi.encodeWithSignature("merkleHash()"));
-      require(success, "Unable to fetch merkle hash");
-      (bytes32 merkleRoot) = abi.decode(callData, (bytes32));
+      // (bool success, bytes memory callData) = address(fetchMerkle).staticcall(abi.encodeWithSignature("merkleHash()"));
+      // require(success, "Unable to fetch merkle hash");
+      // (bytes32 merkleRoot) = abi.decode(callData, (bytes32));
       
-      MerkleDistributor(merkleDistributor).setMerkleRootPerEpoch(merkleRoot, epochNumber-1);
+      // MerkleDistributor(merkleDistributor).setMerkleRootPerEpoch(merkleRoot, epochNumber-1);
+      MerkleDistributor(merkleDistributor).setMerkleRootPerEpoch(0x0, epochNumber-1);
     }
 }
