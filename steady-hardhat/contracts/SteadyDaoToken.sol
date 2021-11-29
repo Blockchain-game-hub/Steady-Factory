@@ -5,8 +5,9 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract SteadyDaoToken is ERC20 {
+contract SteadyDaoToken is ERC20, Ownable {
     IERC20 public immutable s_ufoToken;
 
     constructor(address ufoTokenAddress) ERC20("SteadyDaoToken", "SDT") {
@@ -25,5 +26,9 @@ contract SteadyDaoToken is ERC20 {
     function swapSDTForUFO(uint256 amount) public {
         _burn(msg.sender, amount);
         s_ufoToken.transfer(msg.sender, amount);
+    }
+
+    function mint(address account, uint256 amount) external onlyOwner {
+        _mint(account, amount);
     }
 }

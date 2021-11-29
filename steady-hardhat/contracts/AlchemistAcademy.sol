@@ -7,12 +7,14 @@ import "@openzeppelin/contracts-upgradeable/token/ERC20/presets/ERC20PresetMinte
 import "@openzeppelin/contracts-upgradeable/proxy/ClonesUpgradeable.sol";
 import "./interfaces/ICHYME.sol";
 import "./Alchemist.sol";
+import "./SteadyDaoToken.sol";
 import "hardhat/console.sol";
 
 contract AlchemistAcademy {
     address immutable elixirImplementation;
     address immutable steadyImplementation;
     address immutable alchemistImplementation;
+    address immutable sdtImplementation;
     string steady = "Steady "; 
     string elixir = "Elixir "; 
     string steadySymbol = "S"; 
@@ -21,10 +23,11 @@ contract AlchemistAcademy {
 
     address alchemistDeployedAddress;
     
-    constructor() {
+    constructor(address _sdtImplementation) {
         elixirImplementation = address(new ERC20PresetMinterPauserUpgradeable());
         steadyImplementation = address(new ERC20PresetMinterPauserUpgradeable());
         alchemistImplementation = address(new Alchemist());
+        sdtImplementation = _sdtImplementation;
     }
 
     function createElixir(string memory name, string memory symbol) internal returns (address) {
@@ -50,7 +53,8 @@ contract AlchemistAcademy {
            _Chyme,
            _Steady,
            _Elixir,
-           _priceOracle);
+           _priceOracle,
+           sdtImplementation);
         
         IAccessControlEnumerableUpgradeable(_Elixir).grantRole(MINTER_ROLE, alchemistDeployed);
         IAccessControlEnumerableUpgradeable(_Steady).grantRole(MINTER_ROLE, alchemistDeployed);

@@ -25,8 +25,9 @@ interface AlchemistInterface extends ethers.utils.Interface {
     "elixir()": FunctionFragment;
     "elixirAddr()": FunctionFragment;
     "getElixirAddr()": FunctionFragment;
+    "getSdtAddr()": FunctionFragment;
     "getSteadyAddr()": FunctionFragment;
-    "initialize(address,address,address,address)": FunctionFragment;
+    "initialize(address,address,address,address,address)": FunctionFragment;
     "merge(uint256)": FunctionFragment;
     "priceFromOracle()": FunctionFragment;
     "priceOracle()": FunctionFragment;
@@ -47,12 +48,16 @@ interface AlchemistInterface extends ethers.utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "getSdtAddr",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "getSteadyAddr",
     values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
-    values: [string, string, string, string]
+    values: [string, string, string, string, string]
   ): string;
   encodeFunctionData(functionFragment: "merge", values: [BigNumberish]): string;
   encodeFunctionData(
@@ -81,6 +86,7 @@ interface AlchemistInterface extends ethers.utils.Interface {
     functionFragment: "getElixirAddr",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "getSdtAddr", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getSteadyAddr",
     data: BytesLike
@@ -177,6 +183,8 @@ export class Alchemist extends BaseContract {
 
     getElixirAddr(overrides?: CallOverrides): Promise<[string]>;
 
+    getSdtAddr(overrides?: CallOverrides): Promise<[string]>;
+
     getSteadyAddr(overrides?: CallOverrides): Promise<[string]>;
 
     initialize(
@@ -184,6 +192,7 @@ export class Alchemist extends BaseContract {
       _Steady: string,
       _Elixir: string,
       _priceOracle: string,
+      _steadyDaoToken: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -218,6 +227,8 @@ export class Alchemist extends BaseContract {
 
   getElixirAddr(overrides?: CallOverrides): Promise<string>;
 
+  getSdtAddr(overrides?: CallOverrides): Promise<string>;
+
   getSteadyAddr(overrides?: CallOverrides): Promise<string>;
 
   initialize(
@@ -225,6 +236,7 @@ export class Alchemist extends BaseContract {
     _Steady: string,
     _Elixir: string,
     _priceOracle: string,
+    _steadyDaoToken: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -257,6 +269,8 @@ export class Alchemist extends BaseContract {
 
     getElixirAddr(overrides?: CallOverrides): Promise<string>;
 
+    getSdtAddr(overrides?: CallOverrides): Promise<string>;
+
     getSteadyAddr(overrides?: CallOverrides): Promise<string>;
 
     initialize(
@@ -264,6 +278,7 @@ export class Alchemist extends BaseContract {
       _Steady: string,
       _Elixir: string,
       _priceOracle: string,
+      _steadyDaoToken: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -332,6 +347,8 @@ export class Alchemist extends BaseContract {
 
     getElixirAddr(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getSdtAddr(overrides?: CallOverrides): Promise<BigNumber>;
+
     getSteadyAddr(overrides?: CallOverrides): Promise<BigNumber>;
 
     initialize(
@@ -339,6 +356,7 @@ export class Alchemist extends BaseContract {
       _Steady: string,
       _Elixir: string,
       _priceOracle: string,
+      _steadyDaoToken: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -372,6 +390,8 @@ export class Alchemist extends BaseContract {
 
     getElixirAddr(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    getSdtAddr(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     getSteadyAddr(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     initialize(
@@ -379,6 +399,7 @@ export class Alchemist extends BaseContract {
       _Steady: string,
       _Elixir: string,
       _priceOracle: string,
+      _steadyDaoToken: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

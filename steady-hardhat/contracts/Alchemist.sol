@@ -19,7 +19,7 @@ contract Alchemist is ReentrancyGuard, Initializable {
     address public steadyAddr;
     address public elixirAddr;
     address public priceOracle;
-    address immutable public sdtAddress = 0x738C763dC38751Fc870a1B24ab23a7A36591005C;
+    address public sdtAddress;
 
 
     event Split(address indexed source, uint256 splitAmount, int256 price);
@@ -33,18 +33,21 @@ contract Alchemist is ReentrancyGuard, Initializable {
     function initialize( address _Chyme,
         address _Steady,
         address _Elixir,
-        address _priceOracle) public initializer {
+        address _priceOracle,
+        address _steadyDaoToken) public initializer {
         __Alchemist_init(  _Chyme,
          _Steady,
          _Elixir,
-         _priceOracle);
+         _priceOracle,
+         _steadyDaoToken);
     }
 
     function __Alchemist_init(
         address _Chyme,
         address _Steady,
         address _Elixir,
-        address _priceOracle
+        address _priceOracle,
+        address _steadyDaoToken
     )  internal initializer {
         Chyme = ICHYME(_Chyme);
         steady = IERC20Burnable(_Steady);
@@ -52,6 +55,7 @@ contract Alchemist is ReentrancyGuard, Initializable {
         steadyAddr = _Steady;
         elixirAddr = _Elixir;
         priceOracle = _priceOracle; // 0x34BCe86EEf8516282FEE6B5FD19824163C2B5914;
+        sdtAddress = _steadyDaoToken;
     }
 
     function getSteadyAddr() public view returns(address) {
@@ -60,6 +64,10 @@ contract Alchemist is ReentrancyGuard, Initializable {
 
     function getElixirAddr() public view returns(address) {
         return elixirAddr;
+    }
+
+    function getSdtAddr() public view returns(address) {
+        return sdtAddress;
     }
 
     /// @dev This splits an amount of Chyme into two parts one is Steady tokens which is the 3/4 the token in dollar value
@@ -83,8 +91,8 @@ contract Alchemist is ReentrancyGuard, Initializable {
         steady.mint(msg.sender, sChymeamt);
         elixir.mint(msg.sender, (amount * 25 ) / 100 / 10 * 10);
 
-        //reward splitter with SDT
-        // ICHYME(sdtAddress).approve(msg.sender, 10);
+        // reward splitter with SDT
+        ICHYME(sdtAddress).approve(msg.sender, 10);
 
         // Remove this
         console.log("STEADY ANSWER:: %s", sChymeamt);

@@ -103,6 +103,19 @@
   },
   {
     "inputs": [],
+    "name": "getSdtAddr",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "getSteadyAddr",
     "outputs": [
       {
@@ -134,6 +147,11 @@
       {
         "internalType": "address",
         "name": "_priceOracle",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_steadyDaoToken",
         "type": "address"
       }
     ],
