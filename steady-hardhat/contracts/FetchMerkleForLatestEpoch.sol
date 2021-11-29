@@ -21,7 +21,7 @@ contract FetchMerkleForLatestEpoch is ChainlinkClient, Ownable {
      * @param _jobId This is the jobid from the list of jobs available in our case it is a HTTP GET request
      */ 
     constructor(address _oracle, bytes32 _jobId) {
-        setPublicChainlinkToken();
+        setChainlinkToken(0x326C977E6efc84E512bB9C30f76E30c160eD06FB);
         oracle = _oracle;
         jobId = _jobId;
         fee = 0.1 * 10 ** 18; // 0.1 LINK
@@ -109,7 +109,7 @@ contract FetchMerkleForLatestEpoch is ChainlinkClient, Ownable {
      * @dev Kept pathOfValue as dynamic in case the path changes in future or we want to accomodate more in the same link
      * @param _pathOfValue This is the path of the value in the json object response in the url
      */ 
-    function requestedLockedData(string memory _pathOfValue, uint _epochNumber) public returns (bytes32 requestId) 
+    function requestedData(string memory _pathOfValue, uint _epochNumber) public returns (bytes32 requestId) 
     {
         require(bytes(_pathOfValue).length != 0, "Requested path is not valid");
         

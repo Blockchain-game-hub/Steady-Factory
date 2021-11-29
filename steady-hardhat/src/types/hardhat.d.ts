@@ -149,9 +149,9 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.KeeperCompatibleInterface__factory>;
     getContractFactory(
-      name: "PrizeDistributionContract",
+      name: "PrizeDistributionKeeper",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.PrizeDistributionContract__factory>;
+    ): Promise<Contracts.PrizeDistributionKeeper__factory>;
     getContractFactory(
       name: "SteadyDaoToken",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -332,10 +332,10 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.KeeperCompatibleInterface>;
     getContractAt(
-      name: "PrizeDistributionContract",
+      name: "PrizeDistributionKeeper",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.PrizeDistributionContract>;
+    ): Promise<Contracts.PrizeDistributionKeeper>;
     getContractAt(
       name: "SteadyDaoToken",
       address: string,

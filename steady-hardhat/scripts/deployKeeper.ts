@@ -9,14 +9,14 @@ import { Wallet } from 'ethers';
 import fs from 'fs';
 import { 
   FetchMerkleForLatestEpoch,
-  PrizeDistributionContract, 
+  PrizeDistributionKeeper, 
   MerkleDistributor
 } from '../src/types/index';
 import * as hre from "hardhat";
 
 const STEADY_DAO_TOKEN_ADDRESS = "0x738C763dC38751Fc870a1B24ab23a7A36591005C";
 const oracleAddress = "0x0bDDCD124709aCBf9BB3F824EbC61C87019888bb";
-const jobId = "c6a006e4f4844754a6524445acde84a0"; 
+const jobId = "0x6336613030366534663438343437353461363532343434356163646538346130"; 
 
 let  nonDeployer: Wallet, deployer : Wallet;
 
@@ -31,15 +31,15 @@ async function main() {
   const merkleDist = await merkleDistFactory.deploy(STEADY_DAO_TOKEN_ADDRESS);
   console.log("Deploying merkleDistFactory contract...", merkleDist.address);
 
-  const prizeDistFactory = await ethers.getContractFactory("PrizeDistributionContract");
+  const prizeDistFactory = await ethers.getContractFactory("PrizeDistributionKeeper");
   const prizeDist = await prizeDistFactory.deploy(merkleDist.address, merkleDist.address);//we put dummy for the api
   console.log("Deploying prizeDist contract...", prizeDist.address);
 
-  const MerkleFetchContract = await ethers.getContractFactory("FetchMerkleForLatestEpoch");
-  const merkleFetchContract = await MerkleFetchContract.deploy(oracleAddress, jobId);
-  console.log("Deploying MerkleFetchContract ...", merkleFetchContract.address);
+  const fetchMerkleForLatestEpochFactory = await ethers.getContractFactory("FetchMerkleForLatestEpoch");
+  const fetchMerkleForLatestEpoch = await fetchMerkleForLatestEpochFactory.deploy(oracleAddress, jobId);
+  console.log("Deploying FetchMerkleForLatestEpoch ...", fetchMerkleForLatestEpoch.address);
 
-  return {'prizeDist':prizeDist.address, 'merkleDist':merkleDist.address, 'fetchMerkle': merkleFetchContract.address}
+  return {'prizeDist':prizeDist.address, 'merkleDist':merkleDist.address, 'fetchMerkle': fetchMerkleForLatestEpoch.address}
 }
 
 
@@ -63,7 +63,7 @@ function delay(ms: number) {
 main()
   .then( async (deployedData) => {
     await delay(10000);
-    await verify(deployedData.prizeDist, deployedData.merkleDist, deployedData.fetchMerkle);
+    // await verify(deployedData.prizeDist, deployedData.merkleDist, deployedData.fetchMerkle);
     await verify(deployedData.merkleDist, STEADY_DAO_TOKEN_ADDRESS);
     await verify(deployedData.fetchMerkle, oracleAddress, jobId);
 

@@ -35,7 +35,7 @@ export type { IERC20Burnable } from "./IERC20Burnable";
 export type { IMerkleDistributor } from "./IMerkleDistributor";
 export type { MerkleDistributor } from "./MerkleDistributor";
 export type { KeeperCompatibleInterface } from "./KeeperCompatibleInterface";
-export type { PrizeDistributionContract } from "./PrizeDistributionContract";
+export type { PrizeDistributionKeeper } from "./PrizeDistributionKeeper";
 export type { SteadyDaoToken } from "./SteadyDaoToken";
 export type { DummyPriceOracleForTesting } from "./DummyPriceOracleForTesting";
 
@@ -73,6 +73,6 @@ export { IERC20Burnable__factory } from "./factories/IERC20Burnable__factory";
 export { IMerkleDistributor__factory } from "./factories/IMerkleDistributor__factory";
 export { MerkleDistributor__factory } from "./factories/MerkleDistributor__factory";
 export { KeeperCompatibleInterface__factory } from "./factories/KeeperCompatibleInterface__factory";
-export { PrizeDistributionContract__factory } from "./factories/PrizeDistributionContract__factory";
+export { PrizeDistributionKeeper__factory } from "./factories/PrizeDistributionKeeper__factory";
 export { SteadyDaoToken__factory } from "./factories/SteadyDaoToken__factory";
 export { DummyPriceOracleForTesting__factory } from "./factories/DummyPriceOracleForTesting__factory";
