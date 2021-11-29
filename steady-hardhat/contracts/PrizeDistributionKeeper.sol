@@ -14,7 +14,7 @@ interface KeeperCompatibleInterface {
 }
 
 
-contract PrizeDistributionContract is KeeperCompatibleInterface, ChainlinkClient, Ownable {
+contract PrizeDistributionKeeper is KeeperCompatibleInterface, ChainlinkClient, Ownable {
     using Chainlink for Chainlink.Request;
 
     uint private creationBlock = block.number;
