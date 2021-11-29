@@ -14,7 +14,7 @@ interface KeeperCompatibleInterface {
 }
 
 
-contract PrizeDistributionContract is KeeperCompatibleInterface, ChainlinkClient, Ownable {
+contract PrizeDistributionKeeper is KeeperCompatibleInterface, ChainlinkClient, Ownable {
     using Chainlink for Chainlink.Request;
 
     uint private creationBlock = block.number;
@@ -36,12 +36,9 @@ contract PrizeDistributionContract is KeeperCompatibleInterface, ChainlinkClient
      */ 
      
     function checkUpkeep(bytes calldata checkData) external view override returns  (bool upkeepNeeded, bytes memory performData)   {
-      //here check whether an epoch is finished and  if anyone played? This can be done via an API call
-      address wallet = abi.decode(checkData, (address));
-      return (wallet.balance < 1 ether, bytes(""));
-      if((block.number - creationBlock)% 10 == 0)
+      if((block.number - creationBlock) % 100 == 0)
       {
-        uint epochNumber = (block.number - creationBlock)/10;
+        uint epochNumber = (block.number - creationBlock)/100;
         return (true, abi.encode(epochNumber));
       }
       else{
@@ -54,15 +51,19 @@ contract PrizeDistributionContract is KeeperCompatibleInterface, ChainlinkClient
      */ 
     function performUpkeep(bytes calldata performData) external override {
       //Here what we want to do is if the check upkeep returned true, set the merkleroothash for that epoch
-      (uint256 epochNumber) = abi.decode(performData, (uint256));
+      uint256 epochNumber;
+      for(uint i=0;i<performData.length;i++){
+            epochNumber = epochNumber + uint8(performData[i]);
+      }
 
-      //Triggering api contracts request method
-      FetchMerkleForLatestEpoch(fetchMerkle).requestedLockedData("_pathOfValue",epochNumber);
+      //Triggering api contracts request method //commenting out for now coz no API in polygon mumbai
+      // FetchMerkleForLatestEpoch(fetchMerkle).requestedLockedData("_pathOfValue",epochNumber);
 
-      (bool success, bytes memory callData) = address(fetchMerkle).staticcall(abi.encodeWithSignature("merkleHash()"));
-      require(success, "Unable to fetch merkle hash");
-      (bytes32 merkleRoot) = abi.decode(callData, (bytes32));
+      // (bool success, bytes memory callData) = address(fetchMerkle).staticcall(abi.encodeWithSignature("merkleHash()"));
+      // require(success, "Unable to fetch merkle hash");
+      // (bytes32 merkleRoot) = abi.decode(callData, (bytes32));
       
-      MerkleDistributor(merkleDistributor).setMerkleRootPerEpoch(merkleRoot, epochNumber-1);
+      // MerkleDistributor(merkleDistributor).setMerkleRootPerEpoch(merkleRoot, epochNumber-1);
+      MerkleDistributor(merkleDistributor).setMerkleRootPerEpoch(0x0, epochNumber-1);
     }
 }

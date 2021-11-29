@@ -7,10 +7,16 @@ import { Contract } from 'ethers';
 import  { config, ethers } from "hardhat";
 import { Wallet } from 'ethers';
 import fs from 'fs';
-import { PrizeDistributionContract , MerkleDistributor} from '../src/types/index';
+import { 
+  FetchMerkleForLatestEpoch,
+  PrizeDistributionContract, 
+  MerkleDistributor
+} from '../src/types/index';
 import * as hre from "hardhat";
 
-const UFO_TOKEN_ADDRESS = "0x249e38ea4102d0cf8264d3701f1a0e39c4f2dc3b";
+const STEADY_DAO_TOKEN_ADDRESS = "0x738C763dC38751Fc870a1B24ab23a7A36591005C";
+const oracleAddress = "0x0bDDCD124709aCBf9BB3F824EbC61C87019888bb";
+const jobId = "c6a006e4f4844754a6524445acde84a0"; 
 
 let  nonDeployer: Wallet, deployer : Wallet;
 
@@ -20,21 +26,20 @@ let  nonDeployer: Wallet, deployer : Wallet;
 async function main() {
   const accounts = await (ethers as any).getSigners()
   deployer = accounts[0];
-  // fs.unlinkSync(`${config.paths.artifacts}/contracts/contractAddress.ts`);
-  // const tokenFactory = await ethers.getContractFactory("SteadyDAOToken");
-  // const token = await tokenFactory.deploy();
-  // console.log("Deploying prizeDist contract...", prizeDist.address);
   
   const merkleDistFactory = await ethers.getContractFactory("MerkleDistributor");
-  const merkleDist = await merkleDistFactory.deploy(UFO_TOKEN_ADDRESS);
-  console.log("Deploying prizeDist contract...", merkleDist.address);
+  const merkleDist = await merkleDistFactory.deploy(STEADY_DAO_TOKEN_ADDRESS);
+  console.log("Deploying merkleDistFactory contract...", merkleDist.address);
 
   const prizeDistFactory = await ethers.getContractFactory("PrizeDistributionContract");
   const prizeDist = await prizeDistFactory.deploy(merkleDist.address, merkleDist.address);//we put dummy for the api
   console.log("Deploying prizeDist contract...", prizeDist.address);
 
+  const MerkleFetchContract = await ethers.getContractFactory("FetchMerkleForLatestEpoch");
+  const merkleFetchContract = await MerkleFetchContract.deploy(oracleAddress, jobId);
+  console.log("Deploying MerkleFetchContract ...", merkleFetchContract.address);
 
-  return {'prizeDist':prizeDist.address, 'merkleDist':merkleDist.address}
+  return {'prizeDist':prizeDist.address, 'merkleDist':merkleDist.address, 'fetchMerkle': merkleFetchContract.address}
 }
 
 
@@ -57,9 +62,10 @@ function delay(ms: number) {
 // and properly handle errors.
 main()
   .then( async (deployedData) => {
-    await delay(50000);
-    await verify(deployedData.prizeDist, deployedData.merkleDist, deployedData.merkleDist);
-    // await verify(deployedData._oracleAddress)
+    await delay(10000);
+    await verify(deployedData.prizeDist, deployedData.merkleDist, deployedData.fetchMerkle);
+    await verify(deployedData.merkleDist, STEADY_DAO_TOKEN_ADDRESS);
+    await verify(deployedData.fetchMerkle, oracleAddress, jobId);
 
     process.exit(0)
   })
