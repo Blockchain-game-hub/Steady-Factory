@@ -26,7 +26,6 @@ async function main() {
   return academy.address;
 }
 
-
 async function verify(contractAddress:string, ...args:Array<any>) {
   console.log("verifying", contractAddress, ...args);
   await hre.run("verify:verify", {
