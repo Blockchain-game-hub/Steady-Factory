@@ -56,7 +56,12 @@ https://mumbai.polygonscan.com/address/0x0680a4A953952329A5241c284146DDD9d5adBD6
 We used chainlink oracle to get the latest merkle hash that must be pushed into the Merkle Distributor contract.
 https://mumbai.polygonscan.com/address/0xA7f820c64184142ea73cbf02cd1412e2B4cdA446#code
 
-
+# Setting up
+1. Run yarn at the top level
+2. For the contracts ``` cd steady-hardhat ```  
+3. yarn add ts-node 
+4. npx hardhat compile
+5. update .env.example -> .env
 # Deploying 
 This alchemist requires the address of the base token and the chainlink oracle for deployment. This is a factory contract, use npx hardhat run scripts/deploy.ts followed by custom.ts
 
